@@ -66,6 +66,11 @@
 
 }
 
+.InputBox:focus {
+    outline: 0;
+
+}
+
 .Submit {
     background-color: rgb(0, 144, 240);
     color: white;

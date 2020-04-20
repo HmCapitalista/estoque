@@ -123,6 +123,22 @@
 }
 
 .Request {
+    margin-top: 5px;
+    width: 25px;
+    text-align: center;
     margin-right: 12px;
+    border-width: 0px;
+    background-color: white;
+
+}
+
+
+.Request:active {
+    opacity: 0.5;
+
+}
+
+.Request:focus {
+    outline: 0;
 
 }
