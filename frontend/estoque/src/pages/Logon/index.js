@@ -12,7 +12,11 @@ export default function Logon() {
         e.preventDefault();
 
         if (user && password) {
-            history.push('/user');
+            if(user === "admin"){
+                history.push('/adm');
+            }else {
+                history.push('/user');
+            }
 
         }
 

@@ -19,6 +19,7 @@ export default function UserInterface() {
 
 
     const [requests, setRequests] = useState([]);
+    const [active, setActive] = useState(false);
     const [atualization, setAtualization] = useState(1);
 
     let requestItem = (item) => {
@@ -29,6 +30,7 @@ export default function UserInterface() {
         switch(requests.length) {
             case 0: 
                 setRequests([{ nome , quantidade, id, requestQuant }]);
+                setActive(true);
                 break;
 
             case 4:
@@ -71,6 +73,10 @@ export default function UserInterface() {
                     console.log(requests);
                     setRequests(requests);
                     setAtualization(atualization+1);
+                    if(requests.length === 0) {
+                        setActive(false);
+                        console.log(active);
+                    }
 
                 }else {
                     setRequests(requests);
@@ -79,6 +85,12 @@ export default function UserInterface() {
                 }
 
         }
+
+    }
+
+    let RequestDelete = () => {
+        setRequests([]);
+        setActive(false);
 
     }
 
@@ -106,16 +118,16 @@ export default function UserInterface() {
     );
 
     let renderButton = () => {
-        if(requests !== []) {
+        if(active) {
             return (
-                <div>
-                    <button className="CancelButton">Cancelar Todos os pedidos</button>
+                <div className="CancelDiv">
+                    <button className="CancelButton" onClick={RequestDelete}>Cancelar todos os pedidos</button>
                 </div>
             
-            )
+            );
 
         }else {
-            return ;
+            return (<div></div>);
 
         }
 
@@ -139,7 +151,7 @@ export default function UserInterface() {
                 </div>
             </div>
             {stock.map((item) => renderItem(item))}
-            <div className="Requests"><div>Pedidos:</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
+            <div className="Requests"><div>Pedidos(max: 4):</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
             {renderButton()}
         </div>
     );

@@ -144,6 +144,7 @@
 }
 
 .Requests {
+    height: 20px;
     align-self: flex-start;
     padding-top: 10px;
     margin-left: 20%;
@@ -198,6 +199,38 @@
 }
 
 .Buttons:focus {
+    outline: 0;
+
+}
+
+.CancelDiv {
+    margin-top: 10px;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+.CancelButton {
+    height: 30px;
+    font-size: 15px;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #E02041;
+    border-style: none;
+    border-radius: 3px;
+    transition: opacity 0.5s;
+
+}
+
+.CancelButton:hover {
+    opacity: 0.5;
+
+}
+
+.CancelButton:focus {
     outline: 0;
 
 }
