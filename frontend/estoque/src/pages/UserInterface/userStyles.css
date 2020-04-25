@@ -234,3 +234,36 @@
     outline: 0;
 
 }
+
+.UserPageButtons {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.UserArrowLeftDesactive, .UserArrowRightDesactive {
+    border: none;
+    background: none;
+    opacity: 0.5;
+    outline: 0;
+
+}
+
+.UserArrowLeftActive, .UserArrowRightActive {
+    border: none;
+    background: none;
+
+}
+
+.UserArrowLeftActive:focus, .UserArrowRightActive:focus {
+    outline: 0;
+
+}
+
+.UserArrowLeftActive:active , .UserArrowRightActive:active {
+    opacity: 0.5;
+
+}

@@ -105,10 +105,6 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: rgba(68, 68, 68, 0.979);
-    font-size: 15px;
-    font-weight: 500;
 
 }
 
@@ -117,7 +113,90 @@
 
 }
 
+.InputItemText {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: rgba(68, 68, 68, 0.979);
+    font-size: 15px;
+    border-width: 0px;
+    border-style: solid;
+    border-color: rgb(209, 209, 209);
+    border-radius: 2px;
+    transition-property: border-width, padding-left;
+    transition-duration: 0.2s;
+    font-weight: 500;
+
+}
+
+.InputItemText:focus {
+    outline: 0;
+    border-width: 2px;
+    padding-left: 3px;
+
+}
+
 .AdmItemQuant {
-    width: 45px;
+    width: auto;
+    margin-right: 12px;
+
+}
+
+.InputItemQuant {
+    width: auto;
+    max-width: 50px;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: rgba(68, 68, 68, 0.979);
+    font-size: 15px;
+    border-width: 0px;
+    border-style: solid;
+    border-color: rgb(209, 209, 209);
+    border-radius: 2px;
+    transition: border-width 0.2s;
+    font-weight: 500;
+
+}
+
+.InputItemQuant:focus {
+    outline: 0;
+    border-width: 2px;
+
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.PageButtons {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.ArrowLeftDesactive, .ArrowRightDesactive {
+    border: none;
+    background: none;
+    opacity: 0.5;
+    outline: 0;
+
+}
+
+.ArrowLeftActive, .ArrowRightActive {
+    border: none;
+    background: none;
+
+}
+
+.ArrowLeftActive:focus, .ArrowRightActive:focus {
+    outline: 0;
+
+}
+
+.ArrowLeftActive:active , .ArrowRightActive:active {
+    opacity: 0.5;
 
 }

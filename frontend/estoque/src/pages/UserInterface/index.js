@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut, FiSend, FiPlus, FiMinus } from 'react-icons/fi';
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import './userStyles.css';
 
@@ -17,6 +18,54 @@ export default function UserInterface() {
     {nome: 'CTO', quantidade: 30, id: 9}
     ]);
 
+    const [page, setPage] = useState(0);
+    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/7)-1);
+
+    const [userArrowLeft, setUserArrowLeft] = useState('UserArrowLeftDesactive');
+    const [userArrowRight, setUserArrowRight] = useState('UserArrowRightDesactive');
+
+    let setUserArrowRightFunc = () => {
+        if(page === maxPage-1) {
+            let arrow = 'UserArrowRightDesactive';
+            setUserArrowRight(arrow);
+
+        }else {
+            let arrow = 'UserArrowRightActive';
+            setUserArrowRight(arrow);
+        }
+
+    }
+
+    let setUserArrowLeftFunc = () => {
+        if(page === 0) {
+            let arrow = 'UserArrowLeftDesactive';
+            setUserArrowLeft(arrow);
+
+        }else {
+            let arrow = 'UserArrowLeftActive'
+            setUserArrowLeft(arrow);
+
+        }
+
+    }
+
+    let setMaxPageFunc = () => {
+        if (maxPage === 0) {
+            setMaxPage(maxPage+1);
+
+        }
+
+        if (maxPage === 1 && stock.length > 7) {
+            setMaxPage(maxPage+1);
+
+        }
+    }
+
+    useEffect(() => {
+        setUserArrowLeftFunc();
+        setUserArrowRightFunc();
+        setMaxPageFunc();
+    });
 
     const [requests, setRequests] = useState([]);
     const [active, setActive] = useState(false);
@@ -95,7 +144,6 @@ export default function UserInterface() {
     }
 
     let renderRequests = (item, idx) => {
-
         return (
             <div className="RequestItem">
                 <button className="Buttons" onClick={() => {RequestItemAction(item, "+", idx)}}><FiPlus size={20} color="#3ddb18" /></button>
@@ -106,16 +154,20 @@ export default function UserInterface() {
     )};
 
 
-    let renderItem = (item) => (
-        <div className="ItensDiv">
-            <div className="Itens">
-                <div className="ItemText">{item.nome}</div>
-                <div className="ItemQuant">{item.quantidade}</div>
-                <button className="Request" onClick={() => {requestItem(item)}}><FiSend size={20} color="#1134e7" /></button>
-            </div>
-        </div>
-
-    );
+    let renderItem = (item, idx) => {
+        if(idx >= page*8 && idx <= page*8+7) {
+            console.log(page);
+            return(
+                <div className="ItensDiv">
+                    <div className="Itens">
+                        <div className="ItemText">{item.nome}</div>
+                        <div className="ItemQuant">{item.quantidade}</div>
+                        <button className="Request" onClick={() => {requestItem(item)}}><FiSend size={20} color="#1134e7" /></button>
+                    </div>
+                </div>
+            );
+        }
+    }
 
     let renderButton = () => {
         if(active) {
@@ -128,6 +180,40 @@ export default function UserInterface() {
 
         }else {
             return (<div></div>);
+
+        }
+
+    }
+
+    let userArrowLeftAction = () => {
+        if(userArrowLeft === 'UserArrowLeftActive'){
+            let pages = page-1
+            setPage(pages);
+            if(pages === 0) {
+                setUserArrowLeft('UserArrowLeftDesactive')
+
+            }
+            if(pages < maxPage-1) {
+                setUserArrowRight('UserArrowRightActive');
+                
+            }
+
+        }
+
+    }
+
+    let userArrowRightAction = () => {
+        if(userArrowRight === 'UserArrowRightActive'){
+            let pages = page+1
+            setPage(pages);
+            if(pages > 0) {
+                setUserArrowLeft('UserArrowLeftActive')
+
+            }
+            if(pages === maxPage-1) {
+                setUserArrowRight('UserArrowRightDesactive');
+                
+            }
 
         }
 
@@ -150,7 +236,8 @@ export default function UserInterface() {
                     <div>Ações</div>
                 </div>
             </div>
-            {stock.map((item) => renderItem(item))}
+            {stock.map((item, idx) => renderItem(item, idx))}
+            <div className="UserPageButtons"><button className={userArrowLeft} onClick={userArrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={userArrowRight} onClick={userArrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
             <div className="Requests"><div>Pedidos(max: 4):</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
             {renderButton()}
         </div>

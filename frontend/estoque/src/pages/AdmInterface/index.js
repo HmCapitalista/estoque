@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import './admStyles.css';
 
@@ -17,15 +18,155 @@ export default function ADmInterface() {
     {nome: 'CTO', quantidade: 30, id: 9}
     ]);
 
-    let renderItem = (item) => (
-        <div className="AdmItensDiv">
-            <div className="AdmItens">
-                <div className="AdmItemText">{item.nome}</div>
-                <div className="AdmItemQuant">{item.quantidade}</div>
-            </div>
-        </div>
+    const [page, setPage] = useState(0);
+    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/7)-1);
 
-    );
+    const [arrowLeft, setArrowLeft] = useState('ArrowLeftDesactive');
+    const [arrowRight, setArrowRight] = useState('ArrowRightDesactive');
+
+    const [atualization, setAtualization] = useState(0);
+
+    let setArrowRightFunc = () => {
+        if(page === maxPage-1) {
+            let arrow = 'ArrowRightDesactive';
+            setArrowRight(arrow);
+
+        }else {
+            let arrow = 'ArrowRightActive';
+            setArrowRight(arrow);
+        }
+
+    }
+
+    let setArrowLeftFunc = () => {
+        if(page === 0) {
+            let arrow = 'ArrowLeftDesactive';
+            setArrowLeft(arrow);
+
+        }else {
+            let arrow = 'ArrowLeftActive'
+            setArrowLeft(arrow);
+
+        }
+
+    }
+
+    let setMaxPageFunc = () => {
+        if (maxPage === 0) {
+            setMaxPage(maxPage+1);
+
+        }
+
+        if (maxPage === 1 && stock.length > 7) {
+            setMaxPage(maxPage+1);
+
+        }
+    }
+
+    useEffect(() => {
+        setArrowLeftFunc();
+        setArrowRightFunc();
+        setMaxPageFunc();
+    })
+
+    let setItemName = (item, e) => {
+        item.nome = e.target.value;
+        setAtualization(atualization+1);
+
+    }
+
+    let atualizateItemName = (item, id, mode, event={}) => {
+        if(mode === 'blur'){
+            stock[id].nome = item.nome;
+            setStock(stock);
+            setAtualization(atualization+1);
+            console.log(stock[id])
+        }else {
+            if(event.key === 'Enter'){
+                event.currentTarget.blur();
+
+            }
+
+        }
+    }
+
+    let setItemQuant = (item, e) => {
+        if(!(String(e.target.value).length >= 5)){
+            item.quantidade = e.target.value;
+        }
+        setAtualization(atualization+1);
+
+    }
+
+    let atualizateItemQuant = (item, id, mode, event={}) => {
+        if(mode === 'blur'){
+            stock[id].quantidade = item.quantidade;
+            setStock(stock);
+            setAtualization(atualization+1);
+            console.log(stock[id])
+        }else {
+            if(event.key === 'Enter'){
+                event.currentTarget.blur();
+
+            }
+
+        }
+    }
+
+    let renderItem = (item, idx) => {
+        if(idx >= page*8 && idx <= page*8+7) {
+            return (
+                <div className="AdmItensDiv">
+                    <div className="AdmItens">
+                        <div className="AdmItemText"><input className="InputItemText" value={item.nome}
+                        onChange={(e) => {setItemName(item, e)}}
+                        onBlur={() => {atualizateItemName(item, idx, 'blur');}}
+                        onKeyPress={(e) => {atualizateItemName(item, idx, 'teclado', e)}} /></div>
+                        <div className="AdmItemQuant"><input className="InputItemQuant" value={item.quantidade}
+                        type="number"
+                        onChange={(e) => {setItemQuant(item, e)}}
+                        onBlur={() => {atualizateItemQuant(item, idx, 'blur')}}
+                        onKeyPress={(e) => {atualizateItemQuant(item, idx, 'teclado', e)}} /></div>
+                    </div>
+                </div>
+            );
+        }
+
+    };
+
+    let arrowLeftAction = () => {
+        if(arrowLeft === 'ArrowLeftActive'){
+            let pages = page-1
+            setPage(pages);
+            if(pages === 0) {
+                setArrowLeft('ArrowLeftDesactive')
+
+            }
+            if(pages < maxPage-1) {
+                setArrowRight('ArrowRightActive');
+                
+            }
+
+        }
+
+    }
+
+    let arrowRightAction = () => {
+        if(arrowRight === 'ArrowRightActive'){
+            let pages = page+1
+            setPage(pages);
+            if(pages > 0) {
+                setArrowLeft('ArrowLeftActive')
+
+            }
+            if(pages === maxPage-1) {
+                setArrowRight('ArrowRightDesactive');
+                
+            }
+
+        }
+
+    }
 
     return(
         <div className="AdmPage">
@@ -43,7 +184,8 @@ export default function ADmInterface() {
                     <div>Quantidade</div>
                 </div>
             </div>
-            {stock.map((item) => renderItem(item))}
+            {stock.map((item, id) => renderItem(item, id))}
+            <div className="PageButtons"><button className={arrowLeft} onClick={arrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={arrowRight} onClick={arrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
         </div>
     );
 
