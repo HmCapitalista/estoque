@@ -19,7 +19,8 @@ export default function UserInterface() {
     ]);
 
     const [page, setPage] = useState(0);
-    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/7)-1);
+    // eslint-disable-next-line
+    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/8));
 
     const [userArrowLeft, setUserArrowLeft] = useState('UserArrowLeftDesactive');
     const [userArrowRight, setUserArrowRight] = useState('UserArrowRightDesactive');
@@ -49,22 +50,10 @@ export default function UserInterface() {
 
     }
 
-    let setMaxPageFunc = () => {
-        if (maxPage === 0) {
-            setMaxPage(maxPage+1);
-
-        }
-
-        if (maxPage === 1 && stock.length > 7) {
-            setMaxPage(maxPage+1);
-
-        }
-    }
-
     useEffect(() => {
         setUserArrowLeftFunc();
         setUserArrowRightFunc();
-        setMaxPageFunc();
+
     });
 
     const [requests, setRequests] = useState([]);

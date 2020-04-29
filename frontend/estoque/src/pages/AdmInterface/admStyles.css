@@ -109,11 +109,13 @@
 }
 
 .AdmItemText {
-    width: 100px;
+    width: 45px;
 
 }
 
 .InputItemText {
+    margin-left: -79px;
+    text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgba(68, 68, 68, 0.979);
     font-size: 15px;
@@ -197,6 +199,23 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .ArrowLeftActive:active , .ArrowRightActive:active {
+    opacity: 0.5;
+
+}
+
+.DeleteButton {
+    border: none;
+    background: none;
+    margin-right: 5px;
+
+}
+
+.DeleteButton:Focus {
+    outline: 0;
+
+}
+
+.DeleteButton:active {
     opacity: 0.5;
 
 }

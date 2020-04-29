@@ -114,11 +114,15 @@
 
 .ItemText {
     width: 58px;
+    margin-left: -11.5px;
+    text-align: center;
 
 }
 
 .ItemQuant {
     width: 42px;
+    margin-left: -10px;
+    text-align: center;
 
 }
 

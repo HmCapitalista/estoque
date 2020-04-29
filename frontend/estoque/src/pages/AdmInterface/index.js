@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { GoArrowLeft, GoArrowRight, GoTrashcan } from "react-icons/go";
 
 import './admStyles.css';
 
@@ -15,17 +15,29 @@ export default function ADmInterface() {
     {nome: 'ONU Nokia', quantidade: 10, id: 6},
     {nome: 'ONU Multilaser', quantidade: 10, id: 7},
     {nome: 'Miguelão', quantidade: 20, id: 8},
-    {nome: 'CTO', quantidade: 30, id: 9}
+    {nome: 'CTO', quantidade: 30, id: 2123},
+    {nome: 'CTO', quantidade: 30, id: 421},
+    {nome: 'CTO', quantidade: 30, id: 213},
+    {nome: 'CTO', quantidade: 30, id: 431},
+    {nome: 'CTO', quantidade: 30, id: 321},
+    {nome: 'CTO', quantidade: 30, id: 321},
+    {nome: 'CTO', quantidade: 30, id: 513},
+    {nome: 'CTO', quantidade: 30, id: 21},
+    {nome: 'CTO', quantidade: 30, id: 2412},
+    {nome: 'CTO', quantidade: 30, id: 32131},
+    {nome: 'CTO', quantidade: 30, id: 122},
+    {nome: 'CTO', quantidade: 30, id: 3213},
+    {nome: 'CTO', quantidade: 30, id: 10},
     ]);
 
     const [page, setPage] = useState(0);
-    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/7)-1);
+    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/8));
 
     const [arrowLeft, setArrowLeft] = useState('ArrowLeftDesactive');
     const [arrowRight, setArrowRight] = useState('ArrowRightDesactive');
 
     const [atualization, setAtualization] = useState(0);
-
+    
     let setArrowRightFunc = () => {
         if(page === maxPage-1) {
             let arrow = 'ArrowRightDesactive';
@@ -51,22 +63,10 @@ export default function ADmInterface() {
 
     }
 
-    let setMaxPageFunc = () => {
-        if (maxPage === 0) {
-            setMaxPage(maxPage+1);
-
-        }
-
-        if (maxPage === 1 && stock.length > 7) {
-            setMaxPage(maxPage+1);
-
-        }
-    }
-
     useEffect(() => {
         setArrowLeftFunc();
         setArrowRightFunc();
-        setMaxPageFunc();
+
     })
 
     let setItemName = (item, e) => {
@@ -113,6 +113,17 @@ export default function ADmInterface() {
         }
     }
 
+    let deleteItem = (idx) => {
+
+        stock.splice(idx, 1);
+        setStock(stock);
+        setAtualization(atualization+1);
+        setMaxPage(Math.ceil(stock.length/8));
+        setArrowLeftFunc();
+        setArrowRightFunc();
+
+    }
+
     let renderItem = (item, idx) => {
         if(idx >= page*8 && idx <= page*8+7) {
             return (
@@ -127,6 +138,9 @@ export default function ADmInterface() {
                         onChange={(e) => {setItemQuant(item, e)}}
                         onBlur={() => {atualizateItemQuant(item, idx, 'blur')}}
                         onKeyPress={(e) => {atualizateItemQuant(item, idx, 'teclado', e)}} /></div>
+                        <button className="DeleteButton" onClick={() => {deleteItem(idx)}}>
+                            <GoTrashcan size={20} color="#E02041" />
+                        </button>
                     </div>
                 </div>
             );
@@ -182,10 +196,18 @@ export default function ADmInterface() {
                 <div className="AdmTexts">
                     <div>Itens</div>
                     <div>Quantidade</div>
+                    <div>Ações</div>
                 </div>
             </div>
             {stock.map((item, id) => renderItem(item, id))}
-            <div className="PageButtons"><button className={arrowLeft} onClick={arrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={arrowRight} onClick={arrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
+            <div className="PageButtons">
+                <button className={arrowLeft} onClick={arrowLeftAction}>
+                    <GoArrowLeft size="30" color="black" />
+                </button>
+                <button className={arrowRight} onClick={arrowRightAction}>
+                    <GoArrowRight size="30" color="black" />
+                </button>
+            </div>
         </div>
     );
 
