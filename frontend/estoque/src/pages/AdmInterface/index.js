@@ -15,19 +15,7 @@ export default function ADmInterface() {
     {nome: 'ONU Nokia', quantidade: 10, id: 6},
     {nome: 'ONU Multilaser', quantidade: 10, id: 7},
     {nome: 'Miguelão', quantidade: 20, id: 8},
-    {nome: 'CTO', quantidade: 30, id: 2123},
-    {nome: 'CTO', quantidade: 30, id: 421},
-    {nome: 'CTO', quantidade: 30, id: 213},
-    {nome: 'CTO', quantidade: 30, id: 431},
-    {nome: 'CTO', quantidade: 30, id: 321},
-    {nome: 'CTO', quantidade: 30, id: 321},
-    {nome: 'CTO', quantidade: 30, id: 513},
-    {nome: 'CTO', quantidade: 30, id: 21},
-    {nome: 'CTO', quantidade: 30, id: 2412},
-    {nome: 'CTO', quantidade: 30, id: 32131},
-    {nome: 'CTO', quantidade: 30, id: 122},
-    {nome: 'CTO', quantidade: 30, id: 3213},
-    {nome: 'CTO', quantidade: 30, id: 10},
+    {nome: 'CTO', quantidade: 30, id: 9},
     ]);
 
     const [page, setPage] = useState(0);
