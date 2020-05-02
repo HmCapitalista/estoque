@@ -8,6 +8,14 @@ module.exports = {
         .select('password')
         .first();
 
+        const accountId = await connection('accounts').where('name', name)
+        .select('id')
+        .first(); 
+        
+        const accountType = await connection('accounts').where('name', name)
+        .select('type')
+        .first(); 
+
         if(!accountName) {
             return response.status(400).json({ error: "No account exists with this name" });
 
@@ -19,10 +27,8 @@ module.exports = {
 
         }
 
-        const accountId = await connection('accounts').where('name', name)
-        .select('id')
-        .first(); 
-        return response.json({ accountId });
+        
+        return response.json({ accountId, accountType });
     }
 
 
