@@ -1,11 +1,13 @@
-const cors = require('cors');
 const express = require('express');
+const port = process.env.port || 3000;
 const routes = require('./routes');
 
 const app = express();
 
-app.use(cors());
+
 app.use(express.json());
 app.use(routes);
 
-app.listen(3333);
+
+console.log("Application is running in port: " + String(port));
+app.listen(port);

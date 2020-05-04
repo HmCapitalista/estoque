@@ -18,7 +18,18 @@ module.exports = {
         }
 
         return response.json(stock);
-    }
+    },
+    async delete(request, response) {
+        const stock = await connection('stock').where('itemId', request.body.itemId)
+        .delete(); 
 
+        if(!stock) {
+            return response.status(400).json({error: "error in update"});
+
+        }
+
+        return response.json(stock);
+
+    }
 
 }

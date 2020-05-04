@@ -2,10 +2,10 @@
 exports.up = function(knex) {
     return knex.schema.createTable('accounts', table => {
 
-        table.string('name').notNullable().primary();
+        table.integer('id').primary();
+        table.string('name').notNullable();
         table.string('password').notNullable();
         table.string('type').notNullable();
-        table.integer('id').notNullable();
 
     })
     .createTable('stock', table => {
