@@ -11,6 +11,8 @@ routes.post('/enterProfile', AccountController.index);
 
 routes.post('/profile', AccountController.create);
 
+routes.post('/createStock', StockController.create);
+
 routes.get('/stock', StockController.index);
 
 routes.post('/stock', StockController.change);

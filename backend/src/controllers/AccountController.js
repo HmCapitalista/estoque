@@ -4,21 +4,22 @@ module.exports = {
     async index(request, response) {
         const { name, password } = request.body;
 
-        const accountName = (await connection('accounts').where('name', name)
-        .select('password')
-        )[0].password;
+        let accountName;
+
+        try {
+            accountName = (await connection('accounts').where('name', name)
+            .select('password')
+            )[0].password;
+        } catch(err) {
+            return response.status(400).json({error: "doesn't exist any user with this name"})
+
+        }
 
         const accountId = (await connection('accounts').where('name', name)
         .select('id'))[0].id;
         
         const accountType = (await connection('accounts').where('name', name)
         .select('type'))[0].type;
-
-        if(!accountName) {
-           
-
-
-        }
 
         if(accountName !== password) {
             return response.status(400).json({ error: "Password is wrong" });
@@ -33,8 +34,6 @@ module.exports = {
 
         const maxId = await connection('accounts').select('id');
         const id = maxId.length + 1;
-
-        console.log(id);
 
         const account = await connection('accounts').insert({
             name,

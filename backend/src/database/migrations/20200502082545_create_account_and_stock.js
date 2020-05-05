@@ -13,7 +13,6 @@ exports.up = function(knex) {
 
         table.string('itemName').notNullable();
         table.string('itemQuant').notNullable();
-        table.integer('itemId').notNullable();
 
     })
 
