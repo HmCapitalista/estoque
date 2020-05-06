@@ -29,6 +29,12 @@ module.exports = {
         
         return response.json({ accountId, accountType });
     },
+    async indexById(request, response) {
+        const account = await connection('accounts').where('id', request.body.id);
+
+        return response.json(account);
+
+    },
     async create(request, response) {
         const { name, password, type } = request.body;
 

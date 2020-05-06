@@ -5,9 +5,11 @@ const routes = express.Router();
 const AccountController = require('./controllers/AccountController');
 const StockController = require('./controllers/StockController');
 
-routes.get('/', () => {console.log("conectado")});
+routes.get('/', (request, response) => {response.sendFile('../../frontend/estoque/build/index.html')});
 
 routes.post('/enterProfile', AccountController.index);
+
+routes.post('/enterProfileById', AccountController.indexById);
 
 routes.post('/profile', AccountController.create);
 
@@ -17,6 +19,6 @@ routes.get('/stock', StockController.index);
 
 routes.post('/stock', StockController.change);
 
-routes.delete('/stock', StockController.delete);
+routes.delete('/stock/:id', StockController.delete);
 
 module.exports = routes;

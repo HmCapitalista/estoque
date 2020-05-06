@@ -38,6 +38,27 @@
 
 }
 
+.reloadButton {
+    border: none;
+    background: none;
+
+}
+
+.reloadButton:focus {
+    outline: 0;
+
+}
+
+.reloadButton:active {
+    opacity: 0.5;
+
+}
+
+.AdmName {
+    width: 280px;
+
+}
+
 .AdmBackButton {
     margin-left: 400px;
 

@@ -16,12 +16,13 @@ export default function Logon() {
         if (name && password) {
             try {
                 const response = await api.post('/enterProfile', {name, password});
-                localStorage.setItem("accountId", response.data.accountId);
 
                 if(response.data.accountType === "adm") {
+                    localStorage.setItem("accountId", response.data.accountId);
                     history.push('/adm');
 
                 } else {
+                    localStorage.setItem("accountId", response.data.accountId);
                     history.push('/user');
 
                 }

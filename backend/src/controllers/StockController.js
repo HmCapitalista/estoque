@@ -39,13 +39,17 @@ module.exports = {
         return response.json(await connection('stock').where('id', request.body.id));
     },
     async delete(request, response) {
-        const stock = await connection('stock').where('id', request.body.id)
-        .delete(); 
+        let stock;
 
-        if(!stock) {
+        try {
+            stock = await connection('stock').where('id', request.params.id)
+            .delete();
+
+        } catch(err) {
+            console.log(request.params.id);
             return response.status(400).json({error: "error in delete"});
 
-        }
+        } 
 
         return response.json(stock);
 

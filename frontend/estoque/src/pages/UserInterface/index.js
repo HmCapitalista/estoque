@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut, FiSend, FiPlus, FiMinus } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { GoArrowLeft, GoArrowRight, GoSync } from "react-icons/go";
 
 import './userStyles.css';
 
+import api from '../../services/api';
+
 export default function UserInterface() {
     // eslint-disable-next-line
-    const [stock, setStock] = useState([{nome: 'RJ com capa', quantidade: 10, id: 1},
-    {nome: 'Roteador', quantidade: 20, id: 2},
-    {nome: 'Switch', quantidade: 5, id: 3},
-    {nome: 'Conector Verde', quantidade: 100, id: 4},
-    {nome: 'Conector Azul', quantidade: 100, id: 5},
-    {nome: 'ONU Nokia', quantidade: 10, id: 6},
-    {nome: 'ONU Multilaser', quantidade: 10, id: 7},
-    {nome: 'Miguelão', quantidade: 20, id: 8},
-    {nome: 'CTO', quantidade: 30, id: 9}
-    ]);
+    const [stock, setStock] = useState([]);
 
     const [page, setPage] = useState(0);
     // eslint-disable-next-line
-    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/8));
+    const [maxPage, setMaxPage] = useState(1);
 
     const [userArrowLeft, setUserArrowLeft] = useState('UserArrowLeftDesactive');
     const [userArrowRight, setUserArrowRight] = useState('UserArrowRightDesactive');
+
+    const [name, setName] = useState('');
+
+    let getStock = async () => {
+        try {
+            const response = await api.get('stock');
+            setStock(response.data);
+
+        } catch(err) {
+            console.log(err.response.data);
+
+        }
+
+    }
+
+    let getMaxPage = () => {setMaxPage(Math.ceil(stock.length/8));}
 
     let setUserArrowRightFunc = () => {
         if(page === maxPage-1) {
@@ -51,23 +60,27 @@ export default function UserInterface() {
     }
 
     useEffect(() => {
+        getStock();
+        getMaxPage();
         setUserArrowLeftFunc();
         setUserArrowRightFunc();
+        getName();
 
-    });
+        // eslint-disable-next-line
+    }, []);
 
     const [requests, setRequests] = useState([]);
     const [active, setActive] = useState(false);
     const [atualization, setAtualization] = useState(1);
 
     let requestItem = (item) => {
-        let nome = item.nome;
-        let quantidade = item.quantidade;
+        let itemName = item.itemName;
+        let itemQuant = item.itemQuant;
         let requestQuant = 1;
         let id = item.id;
         switch(requests.length) {
             case 0: 
-                setRequests([{ nome , quantidade, id, requestQuant }]);
+                setRequests([{ itemName , itemQuant, id, requestQuant }]);
                 setActive(true);
                 break;
 
@@ -83,7 +96,7 @@ export default function UserInterface() {
                 });
 
                 if(exists === false) {
-                    setRequests([...requests, { nome , quantidade, id, requestQuant }]);
+                    setRequests([...requests, { itemName , itemQuant, id, requestQuant }]);
 
                 }
 
@@ -94,7 +107,7 @@ export default function UserInterface() {
     let RequestItemAction = (item, mode, idx) => {
         switch(mode) {
             case "+":
-                if(requests[idx].requestQuant !== item.quantidade) {
+                if(requests[idx].requestQuant <= item.itemQuant - 1) {
                     item.requestQuant = item.requestQuant + 1;
                 }
                 requests[idx] = item;
@@ -136,7 +149,7 @@ export default function UserInterface() {
         return (
             <div className="RequestItem">
                 <button className="Buttons" onClick={() => {RequestItemAction(item, "+", idx)}}><FiPlus size={20} color="#3ddb18" /></button>
-                <div className="RequestName">{item.nome}: {item.requestQuant}</div>
+                <div className="RequestName">{item.itemName}: {item.requestQuant}</div>
                 <button className="Buttons" onClick={() => {RequestItemAction(item, "-", idx)}}><FiMinus size={20} color="#fa0404" /></button>
             </div>
 
@@ -145,12 +158,11 @@ export default function UserInterface() {
 
     let renderItem = (item, idx) => {
         if(idx >= page*8 && idx <= page*8+7) {
-            console.log(page);
             return(
                 <div className="ItensDiv">
                     <div className="Itens">
-                        <div className="ItemText">{item.nome}</div>
-                        <div className="ItemQuant">{item.quantidade}</div>
+                        <div className="ItemText">{item.itemName}</div>
+                        <div className="ItemQuant">{item.itemQuant}</div>
                         <button className="Request" onClick={() => {requestItem(item)}}><FiSend size={20} color="#1134e7" /></button>
                     </div>
                 </div>
@@ -208,11 +220,36 @@ export default function UserInterface() {
 
     }
 
+    let getName = async () => {
+        const accountId = localStorage.getItem("accountId");
+        try {
+            const response = await api.post('/enterProfileById', {
+                id: accountId,
+            });
+            setName(response.data[0].name);
+
+        } catch(err) {
+            console.log(err.response);
+
+        }
+
+    }
+
+    let reloadPage = () => {
+        getStock();
+        if(!(stock.length < 8)){
+            getMaxPage();
+            setUserArrowLeftFunc();
+            setUserArrowRightFunc();
+        }
+
+    }
+
     return(
         <div className="UserPage">
             <div className="UserHeader">
                 <div className="InitialHeader">
-                    <h1>Olá, colaborador!</h1>
+                    <h1>Olá, {name}!</h1>
                     <Link className="BackButton" to='/'>
                         <FiLogOut size={20} color="#E02041" />
                     </Link>
@@ -229,6 +266,9 @@ export default function UserInterface() {
             <div className="UserPageButtons"><button className={userArrowLeft} onClick={userArrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={userArrowRight} onClick={userArrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
             <div className="Requests"><div>Pedidos(max: 4):</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
             {renderButton()}
+            <button className="reloadButton" onClick={() => {reloadPage()}}>
+                <GoSync size="30" color="black" />
+            </button>
         </div>
     );
 

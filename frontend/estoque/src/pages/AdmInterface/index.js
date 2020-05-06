@@ -1,31 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight, GoTrashcan } from "react-icons/go";
+import { GoArrowLeft, GoArrowRight, GoTrashcan, GoSync } from "react-icons/go";
 
 import './admStyles.css';
 
+import api from '../../services/api';
+
 export default function ADmInterface() {
     // eslint-disable-next-line
-    const [stock, setStock] = useState([{nome: 'RJ com capa', quantidade: 10, id: 1},
-    {nome: 'Roteador', quantidade: 20, id: 2},
-    {nome: 'Switch', quantidade: 5, id: 3},
-    {nome: 'Conector Verde', quantidade: 100, id: 4},
-    {nome: 'Conector Azul', quantidade: 100, id: 5},
-    {nome: 'ONU Nokia', quantidade: 10, id: 6},
-    {nome: 'ONU Multilaser', quantidade: 10, id: 7},
-    {nome: 'Miguelão', quantidade: 20, id: 8},
-    {nome: 'CTO', quantidade: 30, id: 9},
-    ]);
+    const [stock, setStock] = useState([]);
 
     const [page, setPage] = useState(0);
-    const [maxPage, setMaxPage] = useState(Math.ceil(stock.length/8));
+    const [maxPage, setMaxPage] = useState(1);
 
     const [arrowLeft, setArrowLeft] = useState('ArrowLeftDesactive');
     const [arrowRight, setArrowRight] = useState('ArrowRightDesactive');
 
     const [atualization, setAtualization] = useState(0);
-    
+
+    const [name, setName] = useState('');
+
+    let getStock = async () => {
+        try {
+            const response = await api.get('stock');
+            setStock(response.data);
+
+        } catch(err) {
+            console.log(err.response.data);
+
+        }
+
+    }
+
+    let getMaxPage = () => {setMaxPage(Math.ceil(stock.length/8));}
+
     let setArrowRightFunc = () => {
         if(page === maxPage-1) {
             let arrow = 'ArrowRightDesactive';
@@ -52,23 +61,41 @@ export default function ADmInterface() {
     }
 
     useEffect(() => {
+        getStock();
+        getMaxPage();
         setArrowLeftFunc();
         setArrowRightFunc();
+        getName();
 
-    })
+        // eslint-disable-next-line
+    }, []);
 
     let setItemName = (item, e) => {
-        item.nome = e.target.value;
+        item.itemName = e.target.value;
         setAtualization(atualization+1);
 
     }
 
-    let atualizateItemName = (item, id, mode, event={}) => {
+    let atualizateItemName = async (item, id, mode, event={}) => {
         if(mode === 'blur'){
-            stock[id].nome = item.nome;
-            setStock(stock);
+            try {
+                const response = await api.post('stock', {
+                    id: item.id,
+                    changeType: "itemName",
+                    change: item.itemName,
+                })
+                
+                stock[id] = response.data[0];
+                setStock(stock);
+
+                console.log(response.data[0]);
+                
+            } catch(err) {
+                console.log(err.response.data);
+
+            }
+
             setAtualization(atualization+1);
-            console.log(stock[id])
         }else {
             if(event.key === 'Enter'){
                 event.currentTarget.blur();
@@ -80,18 +107,32 @@ export default function ADmInterface() {
 
     let setItemQuant = (item, e) => {
         if(!(String(e.target.value).length >= 5)){
-            item.quantidade = e.target.value;
+            item.itemQuant = e.target.value;
         }
         setAtualization(atualization+1);
 
     }
 
-    let atualizateItemQuant = (item, id, mode, event={}) => {
+    let atualizateItemQuant = async (item, id, mode, event={}) => {
         if(mode === 'blur'){
-            stock[id].quantidade = item.quantidade;
-            setStock(stock);
+            try {
+                const response = await api.post('stock', {
+                    id: item.id,
+                    changeType: "itemQuant",
+                    change: item.itemQuant,
+                })
+                
+                stock[id] = response.data[0];
+                setStock(stock);
+
+                console.log(response.data[0]);
+
+            } catch(err) {
+                console.log(err.response.data);
+
+            }
+
             setAtualization(atualization+1);
-            console.log(stock[id])
         }else {
             if(event.key === 'Enter'){
                 event.currentTarget.blur();
@@ -101,14 +142,21 @@ export default function ADmInterface() {
         }
     }
 
-    let deleteItem = (idx) => {
+    let deleteItem = async (item, idx) => {
+        try {
 
-        stock.splice(idx, 1);
-        setStock(stock);
-        setAtualization(atualization+1);
-        setMaxPage(Math.ceil(stock.length/8));
-        setArrowLeftFunc();
-        setArrowRightFunc();
+            await api.delete(`stock/${item.id}`);
+
+            stock.splice(idx, 1);
+            setStock(stock);
+            getMaxPage();
+            setArrowLeftFunc();
+            setArrowRightFunc();
+
+        } catch(err) {
+            console.log(err.response.data);
+
+        }
 
     }
 
@@ -117,16 +165,16 @@ export default function ADmInterface() {
             return (
                 <div className="AdmItensDiv">
                     <div className="AdmItens">
-                        <div className="AdmItemText"><input className="InputItemText" value={item.nome}
+                        <div className="AdmItemText"><input className="InputItemText" value={item.itemName}
                         onChange={(e) => {setItemName(item, e)}}
                         onBlur={() => {atualizateItemName(item, idx, 'blur');}}
                         onKeyPress={(e) => {atualizateItemName(item, idx, 'teclado', e)}} /></div>
-                        <div className="AdmItemQuant"><input className="InputItemQuant" value={item.quantidade}
+                        <div className="AdmItemQuant"><input className="InputItemQuant" value={item.itemQuant}
                         type="number"
                         onChange={(e) => {setItemQuant(item, e)}}
                         onBlur={() => {atualizateItemQuant(item, idx, 'blur')}}
                         onKeyPress={(e) => {atualizateItemQuant(item, idx, 'teclado', e)}} /></div>
-                        <button className="DeleteButton" onClick={() => {deleteItem(idx)}}>
+                        <button className="DeleteButton" onClick={() => {deleteItem(item, idx)}}>
                             <GoTrashcan size={20} color="#E02041" />
                         </button>
                     </div>
@@ -170,11 +218,36 @@ export default function ADmInterface() {
 
     }
 
+    let getName = async () => {
+        const accountId = localStorage.getItem("accountId");
+        try {
+            const response = await api.post('/enterProfileById', {
+                id: accountId,
+            });
+            setName(response.data[0].name);
+
+        } catch(err) {
+            console.log(err.response);
+
+        }
+
+    }
+
+    let reloadPage = () => {
+        getStock();
+        if(!(stock.length < 8)) {
+            getMaxPage();
+            setArrowLeftFunc();
+            setArrowRightFunc();
+        }
+
+    }
+
     return(
         <div className="AdmPage">
             <div className="AdmHeader">
                 <div className="AdmInitialHeader">
-                    <h1>Olá, Admin!</h1>
+                    <h1 class="AdmName">Olá, {name}!</h1>
                     <Link className="AdmBackButton" to='/'>
                         <FiLogOut size={20} color="#E02041" />
                     </Link>
@@ -196,6 +269,9 @@ export default function ADmInterface() {
                     <GoArrowRight size="30" color="black" />
                 </button>
             </div>
+            <button className="reloadButton" onClick={() => {reloadPage()}}>
+                <GoSync size="30" color="black" />
+            </button>
         </div>
     );
 
