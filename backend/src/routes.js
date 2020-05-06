@@ -1,11 +1,12 @@
 const express = require('express');
+const path = require('path');
 
 const routes = express.Router();
 
 const AccountController = require('./controllers/AccountController');
 const StockController = require('./controllers/StockController');
 
-routes.get('/', (request, response) => {response.sendFile('../../frontend/estoque/build/index.html')});
+routes.get('/', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
 routes.post('/enterProfile', AccountController.index);
 
