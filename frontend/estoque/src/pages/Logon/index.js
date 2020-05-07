@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import './logStyles.css';
@@ -9,6 +9,12 @@ export default function Logon() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const history = useHistory();
+    const accountId = localStorage.getItem('accountId');
+
+    useEffect(() => {
+        logWithID();
+
+    });
 
     async function logar(e) {
         e.preventDefault();
@@ -37,6 +43,28 @@ export default function Logon() {
                 }
 
             }
+
+        }
+
+    }
+
+    const logWithID = async () => {
+        try {
+            const response = await api.post('/enterProfileById', {
+                id: accountId,
+            });
+
+            if(response.data[0].type === "adm") {
+                localStorage.setItem("accountId", response.data[0].id);
+                history.push('/adm');
+
+            } else {
+                localStorage.setItem("accountId", response.data[0].id);
+                history.push('/user');
+
+            }
+
+        } catch(err) {
 
         }
 

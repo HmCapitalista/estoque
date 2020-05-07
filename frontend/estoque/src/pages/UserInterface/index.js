@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { FiLogOut, FiSend, FiPlus, FiMinus } from 'react-icons/fi';
 import { GoArrowLeft, GoArrowRight, GoSync } from "react-icons/go";
 
@@ -10,6 +10,8 @@ import api from '../../services/api';
 export default function UserInterface() {
     // eslint-disable-next-line
     const [stock, setStock] = useState([]);
+
+    const history = useHistory();
 
     const [page, setPage] = useState(0);
     // eslint-disable-next-line
@@ -250,9 +252,9 @@ export default function UserInterface() {
             <div className="UserHeader">
                 <div className="InitialHeader">
                     <h1>Olá, {name}!</h1>
-                    <Link className="BackButton" to='/'>
+                    <button className="BackButton" onClick={() => {localStorage.setItem('accountId', ''); history.push('/')}}>
                         <FiLogOut size={20} color="#E02041" />
-                    </Link>
+                    </button>
                 </div>
             </div>
             <div className="TextDiv">

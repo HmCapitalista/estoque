@@ -45,6 +45,23 @@
 
 .BackButton {
     margin-left: 400px;
+    border: none;
+    background: none;
+
+}
+
+.BackButton:focus {
+    outline: 0;
+
+}
+
+.BackButton:hover {
+    cursor: pointer;
+
+}
+
+.BackButton:active {
+    opacity: 0.5;
 
 }
 

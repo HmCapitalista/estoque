@@ -61,6 +61,23 @@
 
 .AdmBackButton {
     margin-left: 400px;
+    border: none;
+    background: none;
+
+}
+
+.AdmBackButton:focus {
+    outline: 0;
+
+}
+
+.AdmBackButton:hover {
+    cursor: pointer;
+
+}
+
+.AdmBackButton:active {
+    opacity: 0.5;
 
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FiLogOut } from 'react-icons/fi';
+import { Link, useHistory } from 'react-router-dom';
+import { FiLogOut, FiPlus } from 'react-icons/fi';
 import { GoArrowLeft, GoArrowRight, GoTrashcan, GoSync } from "react-icons/go";
 
 import './admStyles.css';
@@ -10,6 +10,8 @@ import api from '../../services/api';
 export default function ADmInterface() {
     // eslint-disable-next-line
     const [stock, setStock] = useState([]);
+
+    const history = useHistory();
 
     const [page, setPage] = useState(0);
     const [maxPage, setMaxPage] = useState(1);
@@ -248,9 +250,9 @@ export default function ADmInterface() {
             <div className="AdmHeader">
                 <div className="AdmInitialHeader">
                     <h1 class="AdmName">Olá, {name}!</h1>
-                    <Link className="AdmBackButton" to='/'>
+                    <button className="AdmBackButton" onClick={() => {localStorage.setItem('accountId', ''); history.push('/')}}>
                         <FiLogOut size={20} color="#E02041" />
-                    </Link>
+                    </button>
                 </div>
             </div>
             <div className="AdmTextDiv">
@@ -265,6 +267,9 @@ export default function ADmInterface() {
                 <button className={arrowLeft} onClick={arrowLeftAction}>
                     <GoArrowLeft size="30" color="black" />
                 </button>
+                <Link to="/addItens">
+                    <FiPlus size="30" color="#3ddb18" />
+                </Link>
                 <button className={arrowRight} onClick={arrowRightAction}>
                     <GoArrowRight size="30" color="black" />
                 </button>
