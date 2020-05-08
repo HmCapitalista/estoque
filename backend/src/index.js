@@ -25,5 +25,3 @@ io.on('connection', (socket) => {
 
 console.log("Application is running in port: " + String(port));
 server.listen(port);
-
-module.exports = io;
