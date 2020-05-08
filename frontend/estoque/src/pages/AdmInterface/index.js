@@ -62,7 +62,34 @@ export default function ADmInterface() {
 
     }
 
+    let auth = async () => {
+        const accountId = localStorage.getItem("accountId");
+        try {
+            const response = await api.post('/enterProfileById', {
+                id: accountId,
+            });
+
+            if(response.data[0].type === "adm") {
+                localStorage.setItem("accountId", response.data[0].id);
+
+            } else if(response.data[0].type === "user"){
+                localStorage.setItem("accountId", response.data[0].id);
+                history.push('/user');
+
+            } else {
+                history.push('/');
+
+            }
+
+        } catch(err) {
+            history.push('/');
+
+        }
+
+    }
+
     useEffect(() => {
+        auth(); 
         getStock();
         getMaxPage();
         setArrowLeftFunc();

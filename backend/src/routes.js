@@ -10,11 +10,11 @@ const StockController = require('./controllers/StockController');
 
 routes.get('/', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
-routes.get('/user', async () => {try {await api.get('/')} catch(err) {}});
+routes.get('/user', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
-routes.get('/adm', async () => {try {await api.get('/')} catch(err) {}});
+routes.get('/adm', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
-routes.get('/addItens', async () => {try {await api.get('/')} catch(err) {}});
+routes.get('/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
 routes.post('/enterProfile', AccountController.index);
 

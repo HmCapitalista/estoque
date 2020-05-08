@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsArrowReturnLeft } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -10,6 +10,14 @@ import './addStyles.css';
 export default function AddItens() {
     const [name, setName] = useState('');
     const [quant, setQuant] = useState('');
+
+    const history = useHistory();
+
+    useEffect(() => {
+        auth();
+
+        //eslint-disable-next-line
+    }, [])
 
     const setItemQuant = e => {
         if(!(String(e.target.value).length >= 5)){
@@ -29,6 +37,32 @@ export default function AddItens() {
 
         } catch(err) {
             console.log(err.response);
+
+        }
+
+    }
+
+    let auth = async () => {
+        const accountId = localStorage.getItem("accountId");
+        try {
+            const response = await api.post('/enterProfileById', {
+                id: accountId,
+            });
+
+            if(response.data[0].type === "adm") {
+                localStorage.setItem("accountId", response.data[0].id);
+
+            } else if(response.data[0].type === "user"){
+                localStorage.setItem("accountId", response.data[0].id);
+                history.push('/user');
+
+            } else {
+                history.push('/');
+
+            }
+
+        } catch(err) {
+            history.push('/');
 
         }
 
