@@ -152,12 +152,10 @@ export default function UserInterface() {
                 requests[idx] = item;
                 if(requests[idx].requestQuant === 0) {
                     requests.splice(idx, 1);
-                    console.log(requests);
                     setRequests(requests);
                     setAtualization(atualization+1);
                     if(requests.length === 0) {
                         setActive(false);
-                        console.log(active);
                     }
 
                 }else {
@@ -278,7 +276,6 @@ export default function UserInterface() {
 
     let socketClient = () => {
         client.on('reload', () => {
-            console.log('reload');
             reloadPage();
 
         });

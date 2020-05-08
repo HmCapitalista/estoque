@@ -119,8 +119,6 @@ export default function ADmInterface() {
                 stock[id] = response.data[0];
                 setStock(stock);
                 client.emit('reloadEmit');
-
-                console.log(response.data[0]);
                 
             } catch(err) {
                 console.log(err.response.data);
@@ -157,8 +155,6 @@ export default function ADmInterface() {
                 stock[id] = response.data[0];
                 setStock(stock);
                 client.emit('reloadEmit');
-
-                console.log(response.data[0]);
 
             } catch(err) {
                 console.log(err.response.data);
@@ -279,7 +275,6 @@ export default function ADmInterface() {
 
     let socketClient = () => {
         client.on('reload', () => {
-            console.log('reload');
             reloadPage();
 
         });
