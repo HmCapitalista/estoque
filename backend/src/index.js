@@ -18,7 +18,6 @@ const server = http.createServer(app);
 const io = serverIo(server);
 
 io.on('connection', (socket) => {
-    console.log('entrou');
     socket.on('reloadEmit', () => {
         socket.broadcast.emit('reload');
     });
