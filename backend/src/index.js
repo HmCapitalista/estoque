@@ -1,7 +1,9 @@
+require('dotenv/config');
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 const routes = require('./routes');
 const http = require('http');
 const serverIo = require('socket.io');
