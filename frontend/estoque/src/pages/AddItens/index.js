@@ -3,6 +3,7 @@ import { BsArrowReturnLeft } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
+import client from '../../services/socket';
 
 import './addStyles.css';
 
@@ -31,6 +32,7 @@ export default function AddItens() {
                 itemName: name,
                 itemQuant: quant,
             })
+            client.emit('reloadEmit');
 
             console.log(response.data);
 

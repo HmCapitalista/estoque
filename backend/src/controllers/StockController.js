@@ -25,7 +25,7 @@ module.exports = {
         .select('id'))[0].id;
 
         return response.json(await connection('stock').where('id', id).select('*'));
-
+        
     },
     async change(request, response) { 
         const stock = await connection('stock').where('id', request.body.id)

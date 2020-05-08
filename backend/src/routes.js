@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 
-const api = require('./services/api')
-
 const routes = express.Router();
 
 const AccountController = require('./controllers/AccountController');

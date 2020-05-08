@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import './logStyles.css';
 
-import api from '../../services/api'
+import api from '../../services/api';
 
 export default function Logon() {
     const [name, setName] = useState('');

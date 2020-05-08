@@ -6,6 +6,7 @@ import { GoArrowLeft, GoArrowRight, GoTrashcan, GoSync } from "react-icons/go";
 import './admStyles.css';
 
 import api from '../../services/api';
+import client from '../../services/socket';
 
 export default function ADmInterface() {
     // eslint-disable-next-line
@@ -95,6 +96,7 @@ export default function ADmInterface() {
         setArrowLeftFunc();
         setArrowRightFunc();
         getName();
+        socketClient();
 
         // eslint-disable-next-line
     }, []);
@@ -116,6 +118,7 @@ export default function ADmInterface() {
                 
                 stock[id] = response.data[0];
                 setStock(stock);
+                client.emit('reloadEmit');
 
                 console.log(response.data[0]);
                 
@@ -153,6 +156,7 @@ export default function ADmInterface() {
                 
                 stock[id] = response.data[0];
                 setStock(stock);
+                client.emit('reloadEmit');
 
                 console.log(response.data[0]);
 
@@ -175,6 +179,7 @@ export default function ADmInterface() {
         try {
 
             await api.delete(`stock/${item.id}`);
+            client.emit('reloadEmit');
 
             stock.splice(idx, 1);
             setStock(stock);
@@ -272,6 +277,15 @@ export default function ADmInterface() {
 
     }
 
+    let socketClient = () => {
+        client.on('reload', () => {
+            console.log('reload');
+            reloadPage();
+
+        });
+
+    }
+
     return(
         <div className="AdmPage">
             <div className="AdmHeader">
@@ -301,9 +315,6 @@ export default function ADmInterface() {
                     <GoArrowRight size="30" color="black" />
                 </button>
             </div>
-            <button className="reloadButton" onClick={() => {reloadPage()}}>
-                <GoSync size="30" color="black" />
-            </button>
         </div>
     );
 

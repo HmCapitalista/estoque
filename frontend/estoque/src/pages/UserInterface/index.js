@@ -6,6 +6,7 @@ import { GoArrowLeft, GoArrowRight, GoSync } from "react-icons/go";
 import './userStyles.css';
 
 import api from '../../services/api';
+import client from '../../services/socket';
 
 export default function UserInterface() {
     // eslint-disable-next-line
@@ -94,6 +95,7 @@ export default function UserInterface() {
         setUserArrowLeftFunc();
         setUserArrowRightFunc();
         getName();
+        socketClient();
 
         // eslint-disable-next-line
     }, []);
@@ -274,6 +276,15 @@ export default function UserInterface() {
 
     }
 
+    let socketClient = () => {
+        client.on('reload', () => {
+            console.log('reload');
+            reloadPage();
+
+        });
+
+    }
+
     return(
         <div className="UserPage">
             <div className="UserHeader">
@@ -295,9 +306,6 @@ export default function UserInterface() {
             <div className="UserPageButtons"><button className={userArrowLeft} onClick={userArrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={userArrowRight} onClick={userArrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
             <div className="Requests"><div>Pedidos(max: 4):</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
             {renderButton()}
-            <button className="reloadButton" onClick={() => {reloadPage()}}>
-                <GoSync size="30" color="black" />
-            </button>
         </div>
     );
 
