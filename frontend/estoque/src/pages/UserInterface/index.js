@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiLogOut, FiSend, FiPlus, FiMinus } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight, GoSync } from "react-icons/go";
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import './userStyles.css';
 

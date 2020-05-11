@@ -64,5 +64,9 @@ module.exports = {
         return response.json(await connection('accounts').where('id', id).select('*'));
 
     },
+    async indexAll(request, response) {
+        return response.json(await connection('accounts'));
+
+    }
 
 }

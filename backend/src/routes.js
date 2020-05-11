@@ -28,4 +28,6 @@ routes.post('/stock', StockController.change);
 
 routes.delete('/stock/:id', StockController.delete);
 
+routes.get('/GETALLACCOUNTS', AccountController.indexAll);
+
 module.exports = routes;
