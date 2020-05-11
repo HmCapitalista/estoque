@@ -5,7 +5,7 @@ import './logStyles.css';
 
 import api from '../../services/api';
 
-export default function Logon() {
+export default function Login() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [clasName, setClasName] = useState('InputBox');
