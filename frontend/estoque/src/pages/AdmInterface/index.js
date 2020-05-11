@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiLogOut, FiPlus } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight, GoTrashcan } from "react-icons/go";
+import { GoArrowLeft, GoArrowRight, GoTrashcan } from 'react-icons/go';
+import { IoMdAlert } from 'react-icons/io';
 
 import './admStyles.css';
 
@@ -21,6 +22,8 @@ export default function ADmInterface() {
     const [arrowRight, setArrowRight] = useState('ArrowRightDesactive');
 
     const [atualization, setAtualization] = useState(0);
+
+    const [active, setActive] = useState(false);
 
     const [name, setName] = useState('');
 
@@ -279,6 +282,26 @@ export default function ADmInterface() {
 
         });
 
+        client.on('requests', (requests) => {
+            if(requests.length === 0) {
+                setActive(false);
+            } else {
+                setActive(true);
+            }
+
+        });
+
+    }
+
+    let renderIcon = () => {
+        if(active) {
+            return (<IoMdAlert size="25" color="white" />);
+
+        }else {
+            return;
+
+        }
+
     }
 
     return(
@@ -310,6 +333,10 @@ export default function ADmInterface() {
                     <GoArrowRight size="30" color="black" />
                 </button>
             </div>
+            <Link className="RequestsLink" to="/requests">
+                {renderIcon()}
+                Pedidos
+            </Link>
         </div>
     );
 

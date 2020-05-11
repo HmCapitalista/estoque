@@ -111,8 +111,10 @@ export default function UserInterface() {
         let id = item.id;
         switch(requests.length) {
             case 0: 
-                setRequests([{ itemName , itemQuant, id, requestQuant }]);
+                let re = [{ name, itemName , itemQuant, id, requestQuant }];
+                setRequests(re);
                 setActive(true);
+                client.emit('request', re);
                 break;
 
             case 4:
@@ -127,8 +129,10 @@ export default function UserInterface() {
                 });
 
                 if(exists === false) {
-                    setRequests([...requests, { itemName , itemQuant, id, requestQuant }]);
-
+                    let re = [...requests, { name, itemName , itemQuant, id, requestQuant }];
+                    setRequests(re);
+                    setAtualization(atualization+1);
+                    client.emit('request', re);
                 }
 
         }
@@ -144,6 +148,7 @@ export default function UserInterface() {
                 requests[idx] = item;
 
                 setRequests(requests);
+                client.emit('request', requests);
                 setAtualization(atualization+1);
                 break;
 
@@ -163,6 +168,7 @@ export default function UserInterface() {
                     setAtualization(atualization+1);
 
                 }
+                client.emit('request', requests);
 
         }
 
@@ -171,6 +177,7 @@ export default function UserInterface() {
     let RequestDelete = () => {
         setRequests([]);
         setActive(false);
+        client.emit('request', []);
 
     }
 
@@ -266,6 +273,7 @@ export default function UserInterface() {
 
     let reloadPage = () => {
         getStock();
+        RequestDelete();
         if(!(stock.length < 8)){
             getMaxPage();
             setUserArrowLeftFunc();

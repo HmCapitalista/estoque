@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 const routes = require('./routes');
 const http = require('http');
 const serverIo = require('socket.io');
+let requesds = [];
 
 const app = express();
 
@@ -20,9 +21,15 @@ const server = http.createServer(app);
 const io = serverIo(server);
 
 io.on('connection', (socket) => {
+    socket.emit('requests', requesds);
+
     socket.on('reloadEmit', () => {
         socket.broadcast.emit('reload');
     });
+    socket.on('request', requests => {
+        io.emit('requests', requests);
+        requesds = requests
+    })
 })
 
 console.log("Application is running in port: " + String(port));

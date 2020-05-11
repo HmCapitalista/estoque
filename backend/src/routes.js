@@ -14,6 +14,8 @@ routes.get('/adm', (request, response) => {response.sendFile(path.join(__dirname
 
 routes.get('/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
+routes.get('/requests', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+
 routes.post('/enterProfile', AccountController.index);
 
 routes.post('/enterProfileById', AccountController.indexById);
