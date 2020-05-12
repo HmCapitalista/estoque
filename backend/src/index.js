@@ -20,16 +20,28 @@ const server = http.createServer(app);
 
 const io = serverIo(server);
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
     socket.emit('requests', requesds);
 
     socket.on('reloadEmit', () => {
         socket.broadcast.emit('reload');
     });
+
     socket.on('request', requests => {
+        socket.broadcast.emit('requests', requests);
+        requesds = requests;
+        console.log(requesds);
+    });
+
+    socket.on('requestComplete', requests => {
         io.emit('requests', requests);
-        requesds = requests
-    })
+        requesds = requests;
+    });
+
+    socket.on('requestsRequest', () => {
+        socket.emit('requests', requesds);
+    });
+
 })
 
 console.log("Application is running in port: " + String(port));

@@ -8,7 +8,7 @@ import api from '../../services/api';
 import client from '../../services/socket';
 
 export default function Requests() {
-    const [requests, setRequests] = useState([{ name: "a", itemName: "a", requestQuant: 1 }]);
+    const [requests, setRequests] = useState([]);
 
     const history = useHistory();
 
@@ -46,6 +46,8 @@ export default function Requests() {
     }, [])
     
     let socketClient = () => {
+        client.emit('requestsRequest', '');
+
         client.on('requests', requests => {
             setRequests(requests);
 
@@ -53,11 +55,43 @@ export default function Requests() {
 
     }
 
-    let renderRequests = (item) => {
+    let requestComplete = async (item, idx) => {
+        try {
+            const change = item.itemQuant - item.requestQuant;
+            console.log(change);
+            console.log(item.itemQuant);
+            console.log(item.requestQuant);
+            await api.post('/stock', {
+                id: item.id,
+                changeType: 'itemQuant',
+                change: change,
+            });
+            client.emit('reloadEmit');
+
+
+        }catch(err) {}
+
+        requests.splice(idx, 1);
+        client.emit('requestComplete', requests);
+    }
+
+    let renderRequests = (item, idx) => {
         return (
             <div className="RequestsItem">
-                <div className="RequestsName">{item.itemName}</div> <div className="RequestUser">de {item.name}</div> <div className="RequestQuant">quantidade: {item.requestQuant}</div>
-                <button className="RequestsButton">Pedido entregue</button>
+                <div className="RequestsName">
+                    {item.itemName}
+                </div>
+                <div className="RequestUser">
+                    de {item.name}
+                </div>
+                |
+                <div className="RequestQuant">
+                    quantidade: {item.requestQuant}
+                </div>
+                |
+                <button onClick={() => {requestComplete(item, idx);}} className="RequestsButton">
+                    Pedido entregue
+                </button>
             </div>
         );
 
@@ -71,7 +105,7 @@ export default function Requests() {
                     <BsArrowReturnLeft size={20} color="#E02041" />
                 </Link>
             </div>
-            {requests.map(item => renderRequests(item))}
+            {requests.map((item, idx) => renderRequests(item, idx))}
         </div>
     );
 }

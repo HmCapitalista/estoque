@@ -282,7 +282,9 @@ export default function ADmInterface() {
 
         });
 
-        client.on('requests', (requests) => {
+        client.emit('requestsRequest', '');
+
+        client.on('requests', requests => {
             if(requests.length === 0) {
                 setActive(false);
             } else {

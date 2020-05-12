@@ -14,6 +14,8 @@ export default function UserInterface() {
 
     const history = useHistory();
 
+    const accountId = localStorage.getItem("accountId");
+
     const [page, setPage] = useState(0);
     // eslint-disable-next-line
     const [maxPage, setMaxPage] = useState(1);
@@ -63,7 +65,6 @@ export default function UserInterface() {
     }
 
     let auth = async () => {
-        const accountId = localStorage.getItem("accountId");
         try {
             const response = await api.post('/enterProfileById', {
                 id: accountId,
@@ -90,11 +91,11 @@ export default function UserInterface() {
 
     useEffect(() => {
         auth();
+        getName();
         getStock();
         getMaxPage();
         setUserArrowLeftFunc();
         setUserArrowRightFunc();
-        getName();
         socketClient();
 
         // eslint-disable-next-line
@@ -111,7 +112,7 @@ export default function UserInterface() {
         let id = item.id;
         switch(requests.length) {
             case 0: 
-                let re = [{ name, itemName , itemQuant, id, requestQuant }];
+                let re = [{ name, accountId, itemName , itemQuant, id, requestQuant }];
                 setRequests(re);
                 setActive(true);
                 client.emit('request', re);
@@ -129,7 +130,7 @@ export default function UserInterface() {
                 });
 
                 if(exists === false) {
-                    let re = [...requests, { name, itemName , itemQuant, id, requestQuant }];
+                    let re = [...requests, { name, accountId, itemName , itemQuant, id, requestQuant }];
                     setRequests(re);
                     setAtualization(atualization+1);
                     client.emit('request', re);
@@ -257,7 +258,6 @@ export default function UserInterface() {
     }
 
     let getName = async () => {
-        const accountId = localStorage.getItem("accountId");
         try {
             const response = await api.post('/enterProfileById', {
                 id: accountId,
@@ -288,6 +288,22 @@ export default function UserInterface() {
 
         });
 
+        client.on('requests', (requesds) => {
+            setRequests(requesds);
+            setAtualization(atualization+1);
+            requesds.forEach(item => {
+                if(item.accountId === accountId){
+                    setActive(true);
+
+                } else {
+                    setActive(false);
+                    
+                }
+
+            });
+
+        });
+
     }
 
     return(
@@ -309,7 +325,18 @@ export default function UserInterface() {
             </div>
             {stock.map((item, idx) => renderItem(item, idx))}
             <div className="UserPageButtons"><button className={userArrowLeft} onClick={userArrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={userArrowRight} onClick={userArrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
-            <div className="Requests"><div>Pedidos(max: 4):</div> <div className="RequestList">{requests.map((item, idx) => renderRequests(item, idx))}</div></div>
+            <div className="Requests">
+                <div>Pedidos(max: 4):</div> 
+                <div className="RequestList">
+                    {
+                        requests.map((item, idx) => {
+                            if(item.accountId === accountId) {
+                                return renderRequests(item, idx);
+                            }
+                        })
+                    }
+                </div>
+            </div>
             {renderButton()}
         </div>
     );
