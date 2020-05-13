@@ -134,6 +134,7 @@ export default function UserInterface() {
                     setRequests(re);
                     setAtualization(atualization+1);
                     client.emit('request', re);
+                    console.log(4);
                 }
 
         }
@@ -150,6 +151,7 @@ export default function UserInterface() {
 
                 setRequests(requests);
                 client.emit('request', requests);
+                console.log(3);
                 setAtualization(atualization+1);
                 break;
 
@@ -273,7 +275,6 @@ export default function UserInterface() {
 
     let reloadPage = () => {
         getStock();
-        RequestDelete();
         if(!(stock.length < 8)){
             getMaxPage();
             setUserArrowLeftFunc();
@@ -288,19 +289,24 @@ export default function UserInterface() {
 
         });
 
-        client.on('requests', (requesds) => {
+        client.emit('requestsRequest', '');
+
+        client.on('requests', requesds => {
             setRequests(requesds);
             setAtualization(atualization+1);
+            let count = 0;
             requesds.forEach(item => {
                 if(item.accountId === accountId){
-                    setActive(true);
+                    count++;
 
-                } else {
-                    setActive(false);
-                    
                 }
 
             });
+            if(count !== 0) {
+                setActive(true);
+            } else {
+                setActive(false);
+            }
 
         });
 
@@ -329,6 +335,7 @@ export default function UserInterface() {
                 <div>Pedidos(max: 4):</div> 
                 <div className="RequestList">
                     {
+                        // eslint-disable-next-line
                         requests.map((item, idx) => {
                             if(item.accountId === accountId) {
                                 return renderRequests(item, idx);

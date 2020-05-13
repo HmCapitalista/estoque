@@ -67,6 +67,7 @@
     border-radius: 2px;
     background-color: blue;
     margin-left: 10px;
+    margin-right: 10px;
     height: 30px;
     transition: opacity 0.5s;
 
@@ -85,5 +86,23 @@
 .RequestsButton:active {
     transition: opacity 0s;
     opacity: 0;
+
+}
+
+.DeleteRequest {
+    border: none;
+    background: none;
+    margin-left: -3px;
+    cursor: pointer;
+
+}
+
+.DeleteRequest:focus {
+    outline: 0;
+
+}
+
+.DeleteRequest:active {
+    opacity: 0.5;
 
 }

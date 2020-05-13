@@ -9,7 +9,7 @@ import './admStyles.css';
 import api from '../../services/api';
 import client from '../../services/socket';
 
-export default function ADmInterface() {
+export default function AdmInterface() {
     // eslint-disable-next-line
     const [stock, setStock] = useState([]);
 

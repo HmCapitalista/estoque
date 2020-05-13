@@ -34,7 +34,7 @@ io.on('connection', socket => {
     });
 
     socket.on('requestComplete', requests => {
-        io.emit('requests', requests);
+        io.emit('requests', requests, 'note');
         requesds = requests;
     });
 
@@ -42,7 +42,7 @@ io.on('connection', socket => {
         socket.emit('requests', requesds);
     });
 
-})
+});
 
 console.log("Application is running in port: " + String(port));
 server.listen(port);

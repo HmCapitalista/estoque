@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+
 import { BsArrowReturnLeft } from 'react-icons/bs';
 import { Link, useHistory } from 'react-router-dom';
+import { GoTrashcan } from 'react-icons/go';
 
 import './requestStyles.css';
 
@@ -9,6 +11,7 @@ import client from '../../services/socket';
 
 export default function Requests() {
     const [requests, setRequests] = useState([]);
+    const [atualization, setAtualization] = useState(1);
 
     const history = useHistory();
 
@@ -48,8 +51,11 @@ export default function Requests() {
     let socketClient = () => {
         client.emit('requestsRequest', '');
 
-        client.on('requests', requests => {
-            setRequests(requests);
+        client.on('requests', (requests, mode) => {
+            if(mode !== 'note') { 
+                setRequests(requests);
+                setAtualization(atualization+1);
+            }
 
         });
 
@@ -58,9 +64,6 @@ export default function Requests() {
     let requestComplete = async (item, idx) => {
         try {
             const change = item.itemQuant - item.requestQuant;
-            console.log(change);
-            console.log(item.itemQuant);
-            console.log(item.requestQuant);
             await api.post('/stock', {
                 id: item.id,
                 changeType: 'itemQuant',
@@ -72,7 +75,19 @@ export default function Requests() {
         }catch(err) {}
 
         requests.splice(idx, 1);
-        client.emit('requestComplete', requests);
+        const re = requests;
+        client.emit('requestComplete', re);
+        setRequests(re);
+        setAtualization(atualization+1);
+    }
+
+    let requestDelete = (idx) => {
+        requests.splice(idx, 1);
+        const re = requests;
+        client.emit('requestComplete', re);
+        setRequests(re);
+        setAtualization(atualization+1);
+
     }
 
     let renderRequests = (item, idx) => {
@@ -91,6 +106,10 @@ export default function Requests() {
                 |
                 <button onClick={() => {requestComplete(item, idx);}} className="RequestsButton">
                     Pedido entregue
+                </button>
+                |
+                <button onClick={() => {requestDelete(idx)}} className='DeleteRequest'>
+                    <GoTrashcan size="30" color="#E02041" />
                 </button>
             </div>
         );
