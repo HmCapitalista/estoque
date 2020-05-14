@@ -30,7 +30,6 @@ io.on('connection', socket => {
     socket.on('request', requests => {
         socket.broadcast.emit('requests', requests);
         requesds = requests;
-        console.log(requesds);
     });
 
     socket.on('requestComplete', requests => {

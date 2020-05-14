@@ -5,6 +5,7 @@ const routes = express.Router();
 
 const AccountController = require('./controllers/AccountController');
 const StockController = require('./controllers/StockController');
+const EntriesAndExitsController = require('./controllers/EntriesAndExitsController');
 
 routes.get('/', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
@@ -31,5 +32,9 @@ routes.post('/stock', StockController.change);
 routes.delete('/stock/:id', StockController.delete);
 
 routes.get('/GETALLACCOUNTS', AccountController.indexAll);
+
+routes.get('/getEntriesExits', EntriesAndExitsController.index);
+
+routes.post('/createEntrieOrExit', EntriesAndExitsController.create);
 
 module.exports = routes;

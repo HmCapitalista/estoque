@@ -69,8 +69,16 @@ export default function Requests() {
                 changeType: 'itemQuant',
                 change: change,
             });
-            client.emit('reloadEmit');
+            await api.post('/createEntrieOrExit', {
+                type: "exit",
+                changes: item.requestQuant,
+                itemThatChange: item.itemName,
+                alterator: item.name,
+                state: change
 
+            });
+
+            client.emit('reloadEmit');
 
         }catch(err) {}
 
