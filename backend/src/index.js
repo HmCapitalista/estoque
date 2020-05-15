@@ -32,8 +32,8 @@ io.on('connection', socket => {
         requesds = requests;
     });
 
-    socket.on('requestComplete', requests => {
-        io.emit('requests', requests, 'note');
+    socket.on('requestComplete', (requests, accountId) => {
+        io.emit('requests', requests, accountId);
         requesds = requests;
     });
 

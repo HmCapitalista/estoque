@@ -13,9 +13,11 @@ routes.get('/user', (request, response) => {response.sendFile(path.join(__dirnam
 
 routes.get('/adm', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
-routes.get('/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
-routes.get('/requests', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm/requests', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+
+routes.get('/adm/entriesAndExits', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
 
 routes.post('/enterProfile', AccountController.index);
 

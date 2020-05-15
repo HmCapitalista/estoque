@@ -328,17 +328,22 @@ export default function AdmInterface() {
                 <button className={arrowLeft} onClick={arrowLeftAction}>
                     <GoArrowLeft size="30" color="black" />
                 </button>
-                <Link to="/addItens">
+                <Link to="/adm/addItens">
                     <FiPlus size="30" color="#3ddb18" />
                 </Link>
                 <button className={arrowRight} onClick={arrowRightAction}>
                     <GoArrowRight size="30" color="black" />
                 </button>
             </div>
-            <Link className="RequestsLink" to="/requests">
-                {renderIcon()}
-                Pedidos
-            </Link>
+            <div className="RequestsButtons">
+                <Link className="RequestsLink" to="/adm/requests">
+                    {renderIcon()}
+                    Pedidos
+                </Link>
+                <Link className="EntriesAndExitsButton" to="/adm/entriesAndExits">
+                    Entradas e saidas
+                </Link>
+            </div>
         </div>
     );
 

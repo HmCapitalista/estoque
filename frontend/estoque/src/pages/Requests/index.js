@@ -12,11 +12,11 @@ import client from '../../services/socket';
 export default function Requests() {
     const [requests, setRequests] = useState([]);
     const [atualization, setAtualization] = useState(1);
+    const accountId = localStorage.getItem("accountId");
 
     const history = useHistory();
 
     let auth = async () => {
-        const accountId = localStorage.getItem("accountId");
         try {
             const response = await api.post('/enterProfileById', {
                 id: accountId,
@@ -52,7 +52,7 @@ export default function Requests() {
         client.emit('requestsRequest', '');
 
         client.on('requests', (requests, mode) => {
-            if(mode !== 'note') { 
+            if(mode !== accountId) { 
                 setRequests(requests);
                 setAtualization(atualization+1);
             }
@@ -84,7 +84,7 @@ export default function Requests() {
 
         requests.splice(idx, 1);
         const re = requests;
-        client.emit('requestComplete', re);
+        client.emit('requestComplete', re, accountId);
         setRequests(re);
         setAtualization(atualization+1);
     }
@@ -92,7 +92,7 @@ export default function Requests() {
     let requestDelete = (idx) => {
         requests.splice(idx, 1);
         const re = requests;
-        client.emit('requestComplete', re);
+        client.emit('requestComplete', re, accountId);
         setRequests(re);
         setAtualization(atualization+1);
 

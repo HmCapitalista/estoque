@@ -132,9 +132,9 @@ export default function UserInterface() {
                 if(exists === false) {
                     let re = [...requests, { name, accountId, itemName , itemQuant, id, requestQuant }];
                     setRequests(re);
+                    setActive(true);
                     setAtualization(atualization+1);
                     client.emit('request', re);
-                    console.log(4);
                 }
 
         }
