@@ -7,17 +7,17 @@ const AccountController = require('./controllers/AccountController');
 const StockController = require('./controllers/StockController');
 const EntriesAndExitsController = require('./controllers/EntriesAndExitsController');
 
-routes.get('/', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
-routes.get('/user', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/user', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
-routes.get('/adm', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
-routes.get('/adm/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm/addItens', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
-routes.get('/adm/requests', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm/requests', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
-routes.get('/adm/entriesAndExits', (request, response) => {response.sendFile(path.join(__dirname, '../../frontend/estoque/build/index.html'))});
+routes.get('/adm/entriesAndExits', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
 routes.post('/enterProfile', AccountController.index);
 
