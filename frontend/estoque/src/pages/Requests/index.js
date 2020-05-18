@@ -69,7 +69,7 @@ export default function Requests() {
                 changeType: 'itemQuant',
                 change: change,
             });
-            await api.post('/createEntrieOrExit', {
+            await api.post('/EntriesExits', {
                 type: "exit",
                 changes: item.requestQuant,
                 itemThatChange: item.itemName,

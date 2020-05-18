@@ -35,8 +35,8 @@ routes.delete('/stock/:id', StockController.delete);
 
 routes.get('/GETALLACCOUNTS', AccountController.indexAll);
 
-routes.get('/getEntriesExits', EntriesAndExitsController.index);
+routes.get('/EntriesExits', EntriesAndExitsController.index);
 
-routes.post('/createEntrieOrExit', EntriesAndExitsController.create);
+routes.post('/EntriesExits', EntriesAndExitsController.create);
 
 module.exports = routes;

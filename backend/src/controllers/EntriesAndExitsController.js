@@ -2,8 +2,10 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request, response) {
-        const entries_and_exits = await connection('entries_and_exits')
-        return response.json(entries_and_exits);
+        const entries_and_exits = await connection('entries_and_exits');
+        const last_date = (await connection('last_date').max('id').select('date'))[0];
+
+        return response.json({entries_and_exits, last_date});
 
     },
     async create(request, response) {
@@ -33,10 +35,12 @@ module.exports = {
 
         });
 
-        const changie = await connection('entries_and_exits').where('date', date)
-        .where('time', time);
+        await connection('last_date').insert({ date });
 
-        return response.json(changie);
+        const changie = (await connection('entries_and_exits').max('id').select('*'))[0];
+        const last_date = (await connection('last_date').max('id').select('date'))[0];
+        
+        return response.json({changie, last_date});
     }
 
 }

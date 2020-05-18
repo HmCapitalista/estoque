@@ -12,10 +12,15 @@ exports.up = function(knex) {
         table.string('state').notNullable();
 
 
-    })
+    }).createTable('last_date', table => {
+        table.increments();
+        
+        table.string('date');
+
+    });
 
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTable('entries_and_exits');
+    return knex.schema.dropTable('entries_and_exits').dropTable('last_date');
 };
