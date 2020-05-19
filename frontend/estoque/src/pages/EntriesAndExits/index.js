@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import { BsArrowReturnLeft } from 'react-icons/bs';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
 import './EAEStyles.css'
 
@@ -14,7 +15,13 @@ export default function EntriesAndExits() {
 
     const [eAE, setEAE] = useState([]);
     const [dates, setDates] = useState([]);
-    const [selectBox, setSelectBox] = useState('Desactivated');
+    const [entries, setEntries] = useState(false);
+    const [exits, setExits] = useState(false);
+
+    const [EAEVisualizable, setEAEV] = useState([]);
+
+    const [optionValue, setOptionValue] = useState('Aguardando...');
+    const [optionVisible, setOptionVisible] = useState('Desactivated');
 
     const history = useHistory();
 
@@ -57,11 +64,12 @@ export default function EntriesAndExits() {
 
                 let datesi = [response.data.last_date.date];
                 setDates(datesi);
+                setOptionValue(response.data.last_date.date);
 
                 eAEi.forEach(EAEItem => {
                     datesi.forEach(dateItem => {
                         if(EAEItem.date !== dateItem) {
-                            datesi = [...datesi, dateItem]
+                            datesi = [...datesi, EAEItem.date]
                             setDates(datesi);
 
                         }
@@ -70,11 +78,30 @@ export default function EntriesAndExits() {
 
                 });
 
+                datesi.forEach((dateItem, idx) => {
+                    if(dateItem === datesi[idx+1]) {
+                        datesi.splice(idx, 1);
+                        setDates(datesi);
+                    }
+                });
+
+            } else {
+                setOptionValue('Aguardando...')
+
             }
 
         } catch(err) {}
 
     }    
+
+    let renderDates = (item) => {
+        return (
+            <div className="Option" onClick={() => {setOptionValue(item)}}>
+                <label className="OptionValue">{item}</label>
+            </div>
+        );
+
+    }
 
     useEffect(() => {
         auth();
@@ -84,15 +111,29 @@ export default function EntriesAndExits() {
         //eslint-disable-next-line
     }, []);
 
-
     return (
         <div className="EAEPage">
             <div className="EAEHeader">
                 <h1>Entradas e Saidas</h1>
-                <select className="SelectBox" id={selectBox}>
-                    {dates !== [] ? (<option className="Option" selected={true} value={dates[0]}>{dates[0]}</option>) : <div></div>}
-                    <option className="Option" value="">19/05/2020</option>
-                </select>
+                <div className="SelectBox" onClick={() => {optionVisible === 'Desactivated' ? setOptionVisible('Activated') : setOptionVisible('Desactivated')}}>
+                    {optionValue !== 'Aguardando...' ?
+                        <div>
+                            <div className="Selected" id={optionVisible}>
+                                <label className="OptionValue" id="Selected">{optionValue}</label>
+                                {optionVisible === 'Desactivated' ? <FaChevronDown size={20} color="black" /> : <FaChevronUp size={20} color="black" />}
+                            </div>
+                            <div className="Options" id={optionVisible}>
+                                {dates.map((item) => {
+                                    return renderDates(item);
+                                })}
+                            </div>
+                        </div>
+                        :
+                        <div className="Selected" id="Nothing"> 
+                            <label className="OptionValue" id="Selected">{optionValue}</label>
+                        </div>
+                    }
+                </div>
                 <Link className="EAEReturnButton" to="/adm">
                     <BsArrowReturnLeft size={20} color="#E02041" />
                 </Link>
