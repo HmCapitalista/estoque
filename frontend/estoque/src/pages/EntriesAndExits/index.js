@@ -51,11 +51,18 @@ export default function EntriesAndExits() {
     }
 
     let socketClient = () => {
-        client.on('reload');
+        client.on('reload', () => {
+            getEAE();
+        });
 
     }
 
     let getEAE = async () => {
+        setOptionValue('Aguardando');
+        setOptionVisible('Desactivated');
+        setEAEV([]);
+        setEntries(false);
+        setExits(false);
         try {
             const response = await api.get('/EntriesExits');
             if(response.data.last_date.date !== null) {
@@ -103,6 +110,41 @@ export default function EntriesAndExits() {
 
     }
 
+    let defineVisualizableEAE = () => {
+        let VEAE = [];
+        console.log('a');
+        eAE.forEach(item => {
+            if(item.date === optionValue) {
+                VEAE = [...VEAE, item];
+                setEAEV(VEAE);
+
+            }
+
+        });
+
+        if(VEAE.length !== 0) { 
+            VEAE.forEach(item => {
+                if(item.type === 'entries') {
+                    setEntries(true);
+
+                } else if(item.type === 'exit') {
+                    setExits(true);
+
+                } else {
+                    setEntries(false);
+                    setExits(false);
+
+                }
+
+            });
+        } else {
+            setEntries(false);
+            setExits(false);
+
+        }
+
+    }
+
     useEffect(() => {
         auth();
         socketClient();
@@ -110,6 +152,11 @@ export default function EntriesAndExits() {
 
         //eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        defineVisualizableEAE();
+
+    }, [optionValue]);
 
     return (
         <div className="EAEPage">
@@ -138,6 +185,7 @@ export default function EntriesAndExits() {
                     <BsArrowReturnLeft size={20} color="#E02041" />
                 </Link>
             </div>
+            
         </div>
     );
 }
