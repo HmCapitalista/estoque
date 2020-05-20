@@ -344,6 +344,9 @@ export default function AdmInterface() {
                     Entradas e saidas
                 </Link>
             </div>
+            <Link className="EntriesAndExitsButton" to="/adm/REAE">
+                Registrar entradas/saidas
+            </Link>
         </div>
     );
 

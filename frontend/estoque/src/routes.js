@@ -7,6 +7,7 @@ import UserInterface from './pages/UserInterface';
 import AddItens from './pages/AddItens';
 import Requests from './pages/Requests';
 import EntriesAndExits from './pages/EntriesAndExits';
+import RegisterEAE from './pages/RegisterEAE';
 
 export default function Routes() {
     return(
@@ -18,6 +19,7 @@ export default function Routes() {
                 <Route path="/adm/addItens" component={AddItens} />
                 <Route path="/adm/requests" component={Requests} />
                 <Route path="/adm/entriesAndExits" component={EntriesAndExits} />
+                <Route path="/adm/REAE" component={RegisterEAE} />
             </Switch>
         </BrowserRouter>
     );

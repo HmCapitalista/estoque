@@ -19,6 +19,8 @@ routes.get('/adm/requests', (request, response) => {response.sendFile(path.join(
 
 routes.get('/adm/entriesAndExits', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
 
+routes.get('/adm/REAE', (request, response) => {response.sendFile(path.join(__dirname, '../build/index.html'))});
+
 routes.post('/enterProfile', AccountController.index);
 
 routes.post('/enterProfileById', AccountController.indexById);
