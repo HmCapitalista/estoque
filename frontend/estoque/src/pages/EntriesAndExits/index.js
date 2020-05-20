@@ -66,7 +66,7 @@ export default function EntriesAndExits() {
         try {
             const response = await api.get('/EntriesExits');
             if(response.data.last_date.date !== null) {
-                let eAEi = response.data.entries_and_exits.reverse()
+                let eAEi = response.data.entries_and_exits.reverse();
                 setEAE(eAEi);
 
                 let datesi = [response.data.last_date.date];
@@ -74,23 +74,20 @@ export default function EntriesAndExits() {
                 setOptionValue(response.data.last_date.date);
 
                 eAEi.forEach(EAEItem => {
-                    datesi.forEach(dateItem => {
-                        if(EAEItem.date !== dateItem) {
-                            datesi = [...datesi, EAEItem.date]
-                            setDates(datesi);
-
-                        }
-
-                    });
-
+                    datesi = [...datesi, EAEItem.date];
                 });
+
+                setEAE(eAEi.reverse());
 
                 datesi.forEach((dateItem, idx) => {
-                    if(dateItem === datesi[idx+1]) {
-                        datesi.splice(idx, 1);
-                        setDates(datesi);
-                    }
+                    datesi.forEach((datItem) => {
+                        if(dateItem === datItem) {
+                            datesi.splice(idx, 1);
+                        }
+                    });
                 });
+
+                setDates(datesi);
 
             } else {
                 setOptionValue('Aguardando...')
@@ -112,7 +109,8 @@ export default function EntriesAndExits() {
 
     let defineVisualizableEAE = () => {
         let VEAE = [];
-        console.log('a');
+        setEntries(false);
+        setExits(false);
         eAE.forEach(item => {
             if(item.date === optionValue) {
                 VEAE = [...VEAE, item];
@@ -130,10 +128,6 @@ export default function EntriesAndExits() {
                 } else if(item.type === 'exit') {
                     setExits(true);
 
-                } else {
-                    setEntries(false);
-                    setExits(false);
-
                 }
 
             });
@@ -142,6 +136,19 @@ export default function EntriesAndExits() {
             setExits(false);
 
         }
+
+    }
+
+    let renderEAEV = (item) => {
+        return (
+            <div className="Alteration">
+                Alteração em {item.itemThatChange}: foi {item.type === "entries" ? "adicionado" : "retirado"} {item.changes} {parseInt(item.changes) > 1 ? "unidades" : "unidade"}
+                <div>Quantidade final: {item.state}</div>
+                <div>Horário da alteração: {item.time}</div>
+                <div>Alterador: {item.alterator}</div>
+            </div>
+            
+        );
 
     }
 
@@ -156,6 +163,7 @@ export default function EntriesAndExits() {
     useEffect(() => {
         defineVisualizableEAE();
 
+        //eslint-disable-next-line
     }, [optionValue]);
 
     return (
@@ -185,7 +193,32 @@ export default function EntriesAndExits() {
                     <BsArrowReturnLeft size={20} color="#E02041" />
                 </Link>
             </div>
-            
+            {optionValue !== 'Aguardando...' ?
+            <div>
+                <div className="EAEDiv">
+                    <h1>Entradas</h1>
+                    {entries ? <div className="EAEOfTheDay">{
+                    //eslint-disable-next-line
+                    EAEVisualizable.map(item => {
+                        if(item.type === 'entries') {
+                            return renderEAEV(item);
+                        }
+                    })}</div> : <div className="NothingEAE">Nenhuma entrada nesse dia</div>}
+                </div>        
+                <div className="EAEDiv">
+                    <h1>Saidas</h1>
+                    {exits ? <div className="EAEOfTheDay">{
+                    //eslint-disable-next-line
+                    EAEVisualizable.map(item => {
+                        if(item.type === 'exit') {
+                            return renderEAEV(item);
+                        }
+                    })}</div> : <div className="NothingEAE">Nenhuma saída nesse dia</div>}
+                </div>
+            </div>
+            :
+            <div></div>
+            }
         </div>
     );
 }
