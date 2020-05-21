@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const url = process.env.URL || `http://10.5.50.78:80/`;
+
 const api = axios.create({
-    baseURL: `http://10.5.50.78:80/`,
+    baseURL: url,
 });
 
 export default api;
