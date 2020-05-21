@@ -1,0 +1,41 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js start
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;E:\Lua;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Users\elonj\Desktop\Lua\RainbowLanguage;C:\TDM-GCC-64\bin;C:\TDM-GCC-32\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Users\elonj\AppData\Local\Programs\Python\Python37-32\Scripts\;C:\Users\elonj\AppData\Local\Programs\Python\Python37-32\;C:\Users\elonj\Editores de código\Microsoft VS Code\bin;E:\Lua;C:\Users\elonj\AppData\Local\Microsoft\WindowsApps;C:\Users\elonj\AppData\Roaming\npm;C:\Users\elonj;C:\Program Files\heroku\bin;C:\Users\elonj\AppData\Local\atom\bin;C:\Users\elonj\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.22.0
+
+Node version: 
+  12.4.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\elonj\Desktop\JS\Node\Estoque\package.json: Unexpected token s in JSON at position 147
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "Estoque",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/rEiNbU-gAi/estoque.git",
+    "scripts": {
+      start: "yarn start ./backend"
+    },
+    "author": "Elon <elonneto@outlook.com>",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
