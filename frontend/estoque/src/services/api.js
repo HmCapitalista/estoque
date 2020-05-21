@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const url = process.env.URL || `http://10.5.50.78:80/`;
-
 const api = axios.create({
-    baseURL: url,
+    baseURL: "https://estoque-tecnet.herokuapp.com/",
 });
 
 export default api;
