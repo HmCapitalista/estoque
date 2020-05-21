@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/rEiNbU-gAi/estoque.git",
   "scripts": {
-    "start": "cd ./backend && yarn start"
+    "start": "cd ./backend && npm run start"
   },
   "author": "Elon <elonneto@outlook.com>",
   "license": "MIT"
