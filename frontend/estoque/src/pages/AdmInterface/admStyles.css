@@ -138,7 +138,7 @@
 
 .AdmItens {
     margin-top: 10px;
-    width: 100%;
+    width: 540px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -148,11 +148,13 @@
 
 .AdmItemText {
     width: 45px;
+    margin-left: 1.3%;
 
 }
 
 .InputItemText {
     margin-left: -79px;
+    width: 162.5px;
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgba(68, 68, 68, 0.979);
@@ -176,7 +178,7 @@
 
 .AdmItemQuant {
     width: auto;
-    margin-right: 12px;
+    margin-right: 4.5%;
 
 }
 
@@ -208,11 +210,37 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
+.Controller {
+    height: auto;
+    max-height: 282.5px;
+    width: 700px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.Controller::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgb(58, 57, 57);
+
+}
+
+.Controller::-webkit-scrollbar-thumb {
+    background-color: rgb(204, 201, 201);
+
+}
+
+.stockVisualization {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .PageButtons {
     width: 700px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
 }
@@ -244,7 +272,7 @@ input[type=number]::-webkit-outer-spin-button {
 .DeleteButton {
     border: none;
     background: none;
-    margin-right: 5px;
+    margin-right: -1.5%;
 
 }
 

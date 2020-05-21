@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FiLogOut, FiSend, FiPlus, FiMinus } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 import './userStyles.css';
 
@@ -16,13 +15,6 @@ export default function UserInterface() {
 
     const accountId = localStorage.getItem("accountId");
 
-    const [page, setPage] = useState(0);
-    // eslint-disable-next-line
-    const [maxPage, setMaxPage] = useState(1);
-
-    const [userArrowLeft, setUserArrowLeft] = useState('UserArrowLeftDesactive');
-    const [userArrowRight, setUserArrowRight] = useState('UserArrowRightDesactive');
-
     const [name, setName] = useState('');
 
     let getStock = async () => {
@@ -32,33 +24,6 @@ export default function UserInterface() {
 
         } catch(err) {
             console.log(err.response.data);
-
-        }
-
-    }
-
-    let getMaxPage = () => {setMaxPage(Math.ceil(stock.length/8));}
-
-    let setUserArrowRightFunc = () => {
-        if(page === maxPage-1) {
-            let arrow = 'UserArrowRightDesactive';
-            setUserArrowRight(arrow);
-
-        }else {
-            let arrow = 'UserArrowRightActive';
-            setUserArrowRight(arrow);
-        }
-
-    }
-
-    let setUserArrowLeftFunc = () => {
-        if(page === 0) {
-            let arrow = 'UserArrowLeftDesactive';
-            setUserArrowLeft(arrow);
-
-        }else {
-            let arrow = 'UserArrowLeftActive'
-            setUserArrowLeft(arrow);
 
         }
 
@@ -93,9 +58,6 @@ export default function UserInterface() {
         auth();
         getName();
         getStock();
-        getMaxPage();
-        setUserArrowLeftFunc();
-        setUserArrowRightFunc();
         socketClient();
 
         // eslint-disable-next-line
@@ -195,18 +157,16 @@ export default function UserInterface() {
     )};
 
 
-    let renderItem = (item, idx) => {
-        if(idx >= page*8 && idx <= page*8+7) {
-            return(
-                <div className="ItensDiv">
-                    <div className="Itens">
-                        <div className="ItemText">{item.itemName}</div>
-                        <div className="ItemQuant">{item.itemQuant}</div>
-                        <button className="Request" onClick={() => {requestItem(item)}}><FiSend size={20} color="#1134e7" /></button>
-                    </div>
+    let renderItem = (item) => {
+        return(
+            <div className="ItensDiv">
+                <div className="Itens">
+                    <div className="ItemText">{item.itemName}</div>
+                    <div className="ItemQuant">{item.itemQuant}</div>
+                    <button className="Request" onClick={() => {requestItem(item)}}><FiSend size={20} color="#1134e7" /></button>
                 </div>
-            );
-        }
+            </div>
+        );
     }
 
     let renderButton = () => {
@@ -220,40 +180,6 @@ export default function UserInterface() {
 
         }else {
             return (<div></div>);
-
-        }
-
-    }
-
-    let userArrowLeftAction = () => {
-        if(userArrowLeft === 'UserArrowLeftActive'){
-            let pages = page-1
-            setPage(pages);
-            if(pages === 0) {
-                setUserArrowLeft('UserArrowLeftDesactive')
-
-            }
-            if(pages < maxPage-1) {
-                setUserArrowRight('UserArrowRightActive');
-                
-            }
-
-        }
-
-    }
-
-    let userArrowRightAction = () => {
-        if(userArrowRight === 'UserArrowRightActive'){
-            let pages = page+1
-            setPage(pages);
-            if(pages > 0) {
-                setUserArrowLeft('UserArrowLeftActive')
-
-            }
-            if(pages === maxPage-1) {
-                setUserArrowRight('UserArrowRightDesactive');
-                
-            }
 
         }
 
@@ -275,11 +201,6 @@ export default function UserInterface() {
 
     let reloadPage = () => {
         getStock();
-        if(!(stock.length < 8)){
-            getMaxPage();
-            setUserArrowLeftFunc();
-            setUserArrowRightFunc();
-        }
 
     }
 
@@ -329,8 +250,11 @@ export default function UserInterface() {
                     <div>Ações</div>
                 </div>
             </div>
-            {stock.map((item, idx) => renderItem(item, idx))}
-            <div className="UserPageButtons"><button className={userArrowLeft} onClick={userArrowLeftAction}><GoArrowLeft size="30" color="black" /></button><button className={userArrowRight} onClick={userArrowRightAction}><GoArrowRight size="30" color="black" /></button></div>
+            <div className="ConfigVisualization">
+                <div className="UserStockVisualization">
+                    {stock.map((item) => renderItem(item))}
+                </div>
+            </div>
             <div className="Requests">
                 <div>Pedidos(max: 4):</div> 
                 <div className="RequestList">

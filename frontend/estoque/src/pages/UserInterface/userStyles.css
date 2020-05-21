@@ -122,7 +122,7 @@
 
 .Itens {
     margin-top: 5px;
-    width: 100%;
+    width: 544px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -136,7 +136,7 @@
 
 .ItemText {
     width: 58px;
-    margin-left: -11.5px;
+    margin-left: -18px;
     text-align: center;
 
 }
@@ -148,11 +148,39 @@
 
 }
 
+.ConfigVisualization {
+    height: auto;
+    max-height: 272px;
+    width: 700px;
+    overflow: hidden;
+    overflow-y: scroll;
+
+}
+
+.ConfigVisualization::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgb(58, 57, 57);
+
+}
+
+.ConfigVisualization::-webkit-scrollbar-thumb {
+    background-color: rgb(204, 201, 201);
+
+}
+
+
+.UserStockVisualization {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .Request {
     margin-top: 5px;
     width: 25px;
     text-align: center;
-    margin-right: 12px;
+    margin-right: 1px;
     border-width: 0px;
     background-color: white;
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FiLogOut, FiPlus } from 'react-icons/fi';
-import { GoArrowLeft, GoArrowRight, GoTrashcan } from 'react-icons/go';
+import { GoTrashcan } from 'react-icons/go';
 import { IoMdAlert } from 'react-icons/io';
 
 import './admStyles.css';
@@ -14,12 +14,6 @@ export default function AdmInterface() {
     const [stock, setStock] = useState([]);
 
     const history = useHistory();
-
-    const [page, setPage] = useState(0);
-    const [maxPage, setMaxPage] = useState(1);
-
-    const [arrowLeft, setArrowLeft] = useState('ArrowLeftDesactive');
-    const [arrowRight, setArrowRight] = useState('ArrowRightDesactive');
 
     const [atualization, setAtualization] = useState(0);
 
@@ -34,33 +28,6 @@ export default function AdmInterface() {
 
         } catch(err) {
             console.log(err.response.data);
-
-        }
-
-    }
-
-    let getMaxPage = () => {setMaxPage(Math.ceil(stock.length/8));}
-
-    let setArrowRightFunc = () => {
-        if(page === maxPage-1) {
-            let arrow = 'ArrowRightDesactive';
-            setArrowRight(arrow);
-
-        }else {
-            let arrow = 'ArrowRightActive';
-            setArrowRight(arrow);
-        }
-
-    }
-
-    let setArrowLeftFunc = () => {
-        if(page === 0) {
-            let arrow = 'ArrowLeftDesactive';
-            setArrowLeft(arrow);
-
-        }else {
-            let arrow = 'ArrowLeftActive'
-            setArrowLeft(arrow);
 
         }
 
@@ -95,9 +62,6 @@ export default function AdmInterface() {
     useEffect(() => {
         auth(); 
         getStock();
-        getMaxPage();
-        setArrowLeftFunc();
-        setArrowRightFunc();
         getName();
         socketClient();
 
@@ -182,9 +146,7 @@ export default function AdmInterface() {
 
             stock.splice(idx, 1);
             setStock(stock);
-            getMaxPage();
-            setArrowLeftFunc();
-            setArrowRightFunc();
+            setAtualization(atualization+1);
 
         } catch(err) {
             console.log(err.response.data);
@@ -194,62 +156,26 @@ export default function AdmInterface() {
     }
 
     let renderItem = (item, idx) => {
-        if(idx >= page*8 && idx <= page*8+7) {
-            return (
-                <div className="AdmItensDiv">
-                    <div className="AdmItens">
-                        <div className="AdmItemText"><input className="InputItemText" value={item.itemName}
-                        onChange={(e) => {setItemName(item, e)}}
-                        onBlur={() => {atualizateItemName(item, idx, 'blur');}}
-                        onKeyPress={(e) => {atualizateItemName(item, idx, 'teclado', e)}} /></div>
-                        <div className="AdmItemQuant"><input className="InputItemQuant" value={item.itemQuant}
-                        type="number"
-                        onChange={(e) => {setItemQuant(item, e)}}
-                        onBlur={() => {atualizateItemQuant(item, idx, 'blur')}}
-                        onKeyPress={(e) => {atualizateItemQuant(item, idx, 'teclado', e)}} /></div>
-                        <button className="DeleteButton" onClick={() => {deleteItem(item, idx)}}>
-                            <GoTrashcan size={20} color="#E02041" />
-                        </button>
-                    </div>
+        return (
+            <div className="AdmItensDiv" key={item.id}>
+                <div className="AdmItens">
+                    <div className="AdmItemText"><input className="InputItemText" value={item.itemName}
+                    onChange={(e) => {setItemName(item, e)}}
+                    onBlur={() => {atualizateItemName(item, idx, 'blur');}}
+                    onKeyPress={(e) => {atualizateItemName(item, idx, 'teclado', e)}} /></div>
+                    <div className="AdmItemQuant"><input className="InputItemQuant" value={item.itemQuant}
+                    type="number"
+                    onChange={(e) => {setItemQuant(item, e)}}
+                    onBlur={() => {atualizateItemQuant(item, idx, 'blur')}}
+                    onKeyPress={(e) => {atualizateItemQuant(item, idx, 'teclado', e)}} /></div>
+                    <button className="DeleteButton" onClick={() => {deleteItem(item, idx)}}>
+                        <GoTrashcan size={20} color="#E02041" />
+                    </button>
                 </div>
-            );
-        }
+            </div>
+        );
 
     };
-
-    let arrowLeftAction = () => {
-        if(arrowLeft === 'ArrowLeftActive'){
-            let pages = page-1
-            setPage(pages);
-            if(pages === 0) {
-                setArrowLeft('ArrowLeftDesactive')
-
-            }
-            if(pages < maxPage-1) {
-                setArrowRight('ArrowRightActive');
-                
-            }
-
-        }
-
-    }
-
-    let arrowRightAction = () => {
-        if(arrowRight === 'ArrowRightActive'){
-            let pages = page+1
-            setPage(pages);
-            if(pages > 0) {
-                setArrowLeft('ArrowLeftActive')
-
-            }
-            if(pages === maxPage-1) {
-                setArrowRight('ArrowRightDesactive');
-                
-            }
-
-        }
-
-    }
 
     let getName = async () => {
         const accountId = localStorage.getItem("accountId");
@@ -268,11 +194,6 @@ export default function AdmInterface() {
 
     let reloadPage = () => {
         getStock();
-        if(!(stock.length < 8)) {
-            getMaxPage();
-            setArrowLeftFunc();
-            setArrowRightFunc();
-        }
 
     }
 
@@ -310,7 +231,7 @@ export default function AdmInterface() {
         <div className="AdmPage">
             <div className="AdmHeader">
                 <div className="AdmInitialHeader">
-                    <h1 class="AdmName">Olá, {name}!</h1>
+                    <h1 className="AdmName">Olá, {name}!</h1>
                     <button className="AdmBackButton" onClick={() => {localStorage.setItem('accountId', ''); history.push('/')}}>
                         <FiLogOut size={20} color="#E02041" />
                     </button>
@@ -323,17 +244,15 @@ export default function AdmInterface() {
                     <div>Ações</div>
                 </div>
             </div>
-            {stock.map((item, id) => renderItem(item, id))}
+            <div className="Controller">
+                <div className="stockVisualization">
+                    {stock.map((item, id) => renderItem(item, id))}
+                </div>
+            </div>
             <div className="PageButtons">
-                <button className={arrowLeft} onClick={arrowLeftAction}>
-                    <GoArrowLeft size="30" color="black" />
-                </button>
                 <Link to="/adm/addItens">
                     <FiPlus size="30" color="#3ddb18" />
                 </Link>
-                <button className={arrowRight} onClick={arrowRightAction}>
-                    <GoArrowRight size="30" color="black" />
-                </button>
             </div>
             <div className="RequestsButtons">
                 <Link className="RequestsLink" to="/adm/requests">
