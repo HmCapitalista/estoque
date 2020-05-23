@@ -26,3 +26,194 @@
     margin-top: 10px;
 
 }
+
+.REAEForm {
+    margin-top: 30px;
+    width: 1180px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.ItemSelectBox, .TypeSelectBox {
+    margin-top: 25px;
+    margin-right: 15px;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(185, 183, 183);
+    width: 170px;
+    height: auto;
+    max-height: 290px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+    overflow: hidden;
+
+}
+
+.TypeSelectBox {
+    width: 200px;
+
+}
+
+.ItemSelected, .TypeSelected {
+    width: 163px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: -5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+
+.TypeSelected {
+    width: 190px;
+
+}
+
+.ItemSelected#Active, .TypeSelected#Active {
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(145, 145, 145);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+}
+
+.ItemSelected#Desactive, .TypeSelected#Desactive {
+    border: none;
+
+}
+
+.ItemSelectedValue, .TypeSelectedValue {
+    cursor: pointer;
+    width: 119.9px;
+
+}
+
+.TypeSelectedValue {
+    width: 150px;
+
+}
+
+.ItemOptions#Active, .TypeOptions#Active {
+    width: 165px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    overflow-y: auto;
+    height: auto;
+    max-height: 200px;
+    padding-left: 5px;
+
+}
+
+.ItemOptions::-webkit-scrollbar {
+    width: 5px;
+    background-color: rgb(58, 57, 57);
+
+}
+
+.ItemOptions::-webkit-scrollbar-thumb {
+    background-color: rgb(204, 201, 201);
+    
+}
+
+.ItemOptions#Desactive, .TypeOptions#Desactive {
+    display: none;
+
+}
+
+.ItemOption, .TypeOption {
+    width: 119.9px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+
+}
+
+.ItemOption:hover, .TypeOption:hover {
+    opacity: 0.5;
+
+}
+
+.ItemOptionValue {
+    cursor: pointer;
+
+}
+
+.REAEInputs {
+    width: 212.5px;
+    height: 100px;
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.InputREAEQuant, .InputREAEAlter {
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    border-color: rgb(94, 94, 94);
+    background: none;
+    outline: 0;
+
+}
+
+.REAESubmit {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    width: 100px;
+    height: 60px;
+    border: none;
+    border-radius: 8px;
+    background: blue;
+    color: white;
+    outline: 0;
+    transition: opacity 0.2s;
+
+}
+
+.REAESubmit:hover {
+    opacity: 0.5;
+
+}
+
+.REAESubmit:active {
+    transition: none;
+    opacity: 0.2;
+
+}
+
+.Attempt {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 750px;
+    margin-top: 30px;
+    opacity: 0.5;
+    font-size: 14px;
+
+}
