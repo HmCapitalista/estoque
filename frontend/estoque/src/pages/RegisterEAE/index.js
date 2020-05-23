@@ -63,7 +63,6 @@ export default function RegisterEAE() {
             const response = await api.get('stock');
             setStock(response.data);
             setAtualization(atualization+1);
-            console.log(response.data);
 
         } catch(err) {
             console.log(err.response.data);
@@ -81,7 +80,6 @@ export default function RegisterEAE() {
     }, []);
 
     let renderStockOption = (item) => {
-        console.log(item)
         return (
             <div className="ItemOption" key={item.id} onClick={() => {setItemOptionValue(item.itemName)}}>
                 <label className="ItemOptionValue">
