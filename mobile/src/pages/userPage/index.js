@@ -50,7 +50,7 @@ export default function userPage({ navigation }) {
         <View style={styles.default}>
             <View style={styles.header}>
                 <Text style={styles.textHeader}>Olá {name}</Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={backFunc}>
                     <Icon name="log-out" color="red" size={20} />
                 </TouchableOpacity>
             </View>

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     textHeader: {
         width: 200,
         fontFamily: "Roboto",
-        fontWeight: "500",
+        fontWeight: "600",
         fontSize: 20,
     },
 
