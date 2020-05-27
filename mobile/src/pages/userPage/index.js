@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, BackHandler } from 'react-native';
+import { View, Text, BackHandler, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,11 +8,17 @@ import styles from './styles';
 
 import api from '../../services/api';
 import client from '../../services/socket';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 
 export default function userPage({ navigation }) {
     
     const [name, setName] = useState('');
+    const [accountId, setAccountId] = useState(2);
+
+    const [stock, setStock] = useState([]);
+    const [requests, setRequests] = useState([]);
+    const [active, setActive] = useState(false);
+    const [atualization, setAtualization] = useState(1);
 
     const defineVariables = async () => {
         try {
@@ -22,8 +28,34 @@ export default function userPage({ navigation }) {
 
     }
 
-    const socketClient = () => {
-        client.on('reload');
+    let socketClient = () => {
+        client.on('reload', () => {
+            reloadPage();
+
+        });
+
+        client.emit('requestsRequest', '');
+
+        client.on('requests', requesds => {
+            setRequests(requesds);
+            setAtualization(atualization+1);
+            let count = 0;
+            console.log(requesds);
+            requesds.forEach(item => {
+                if(item.accountId === accountId){
+                    count++;
+
+                }
+
+            });
+            if(count !== 0) {
+                setActive(true);
+            } else {
+                setActive(false);
+            }
+
+        });
+
     }
 
     const backFunc = async () => {
@@ -35,9 +67,58 @@ export default function userPage({ navigation }) {
 
     }
 
+    const renderItem = (item) => {
+        return (
+            <View style={styles.item}>
+                <Text style={styles.itemName}>
+                    {item.itemName}
+                </Text>
+                <Text style={styles.itemQuant}>
+                    {item.itemQuant}
+                </Text>
+                <TouchableOpacity style={styles.itemAction} onClick={requestItem(item)}>
+                    <Icon name="send" color="blue" size={20} />
+                </TouchableOpacity>
+            </View>
+        );
+
+    }
+
+    const renderRequest = (item, idx) => {
+        if(name === item.name) {
+            return (
+                <View style={styles.request}>
+                    <Text style={styles.requestName}>{item.itemName}:</Text>
+                    <TouchableOpacity style={styles.requestAction} onClick={() => {RequestItemAction(item, "+", idx)}}>
+                        <Icon name="plus" color="#39f704" size={25} />
+                    </TouchableOpacity>
+                    <Text>{item.requestQuant}</Text>
+                    <TouchableOpacity style={styles.requestAction} onClick={() => {RequestItemAction(item, "-", idx)}}>
+                        <Icon name="minus" color="red" size={25} />
+                    </TouchableOpacity>
+                </View>
+            );
+
+        }
+
+    }
+
+    const getStock = async () => {
+        try {
+            const response = await api.get('/stock');
+
+            setStock(response.data);
+
+        }catch(err) {
+            alert('Verifique sua conexão e tente novamente');
+        }
+
+    }
+
     useEffect(() => {
         defineVariables();
         socketClient();
+        getStock();
 
 
         const handler = BackHandler.addEventListener("hardwareBackPress", backFunc);
@@ -45,6 +126,89 @@ export default function userPage({ navigation }) {
         return () => handler.remove();
 
     }, []);
+
+    const renderButton = () => {
+        return 
+    }
+
+    let requestItem = (item) => {
+        let itemName = item.itemName;
+        let itemQuant = item.itemQuant;
+        let requestQuant = 1;
+        let id = item.id;
+        switch(requests.length) {
+            case 0: 
+                let re = [{ name, accountId, itemName , itemQuant, id, requestQuant }];
+                setRequests(re);
+                setActive(true);
+                client.emit('request', re);
+                break;
+
+            case 4:
+                break;
+
+            default:
+                let exists = false;
+                requests.forEach((iten) => {
+                    if(iten.id === id) {
+                        exists = true;
+                    }
+                });
+
+                if(exists === false) {
+                    let re = [...requests, { name, accountId, itemName , itemQuant, id, requestQuant }];
+                    setRequests(re);
+                    setActive(true);
+                    setAtualization(atualization+1);
+                    client.emit('request', re);
+                }
+
+        }
+
+    }
+
+    let RequestItemAction = (item, mode, idx) => {
+        switch(mode) {
+            case "+":
+                if(requests[idx].requestQuant <= item.itemQuant - 1) {
+                    item.requestQuant = item.requestQuant + 1;
+                }
+                requests[idx] = item;
+
+                setRequests(requests);
+                client.emit('request', requests);
+                console.log(3);
+                setAtualization(atualization+1);
+                break;
+
+            default:
+                item.requestQuant = item.requestQuant - 1;
+                requests[idx] = item;
+                if(requests[idx].requestQuant === 0) {
+                    requests.splice(idx, 1);
+                    setRequests(requests);
+                    setAtualization(atualization+1);
+                    if(requests.length === 0) {
+                        setActive(false);
+                    }
+
+                }else {
+                    setRequests(requests);
+                    setAtualization(atualization+1);
+
+                }
+                client.emit('request', requests);
+
+        }
+
+    }
+
+    let RequestDelete = () => {
+        setRequests([]);
+        setActive(false);
+        client.emit('request', []);
+
+    }
     
     return (
         <View style={styles.default}>
@@ -54,6 +218,28 @@ export default function userPage({ navigation }) {
                     <Icon name="log-out" color="red" size={20} />
                 </TouchableOpacity>
             </View>
+            <View style={styles.list}>
+                <Text style={styles.listItens}>Itens</Text>
+                <Text style={styles.listItens}>Quantidade</Text>
+                <Text style={styles.listItens}>Açoes</Text>
+            </View>
+            <SafeAreaView style={styles.itens}>
+                <FlatList
+                    data={stock}
+                    renderItem={({ item }) => renderItem(item)}
+                    keyExtractor={(i, index) => String(index)}
+                />
+            </SafeAreaView>
+            <SafeAreaView style={styles.requests}>
+                <Text style={styles.headerRequests}>Pedidos(max: 4)</Text>
+                <FlatList
+                    style={styles.requestList}
+                    data={requests}
+                    renderItem={({ item, idx }) => renderRequest(item, idx)}
+                    keyExtractor={(i, idx) => String(idx)}
+                />
+                {active ? renderButton() : <View></View>}
+            </SafeAreaView>
         </View>
     );
 }
