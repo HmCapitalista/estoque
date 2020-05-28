@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, BackHandler, SafeAreaView } from 'react-native';
+import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,7 +9,6 @@ import styles from './styles';
 
 import api from '../../services/api';
 import client from '../../services/socket';
-import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 
 export default function userPage({ navigation }) {
     
@@ -23,6 +23,7 @@ export default function userPage({ navigation }) {
     const defineVariables = async () => {
         try {
             setName(await AsyncStorage.getItem('name'));
+            setAccountId(await AsyncStorage.getItem('accountId'));
 
         } catch(err) {}
 
@@ -40,7 +41,6 @@ export default function userPage({ navigation }) {
             setRequests(requesds);
             setAtualization(atualization+1);
             let count = 0;
-            console.log(requesds);
             requesds.forEach(item => {
                 if(item.accountId === accountId){
                     count++;
@@ -76,7 +76,7 @@ export default function userPage({ navigation }) {
                 <Text style={styles.itemQuant}>
                     {item.itemQuant}
                 </Text>
-                <TouchableOpacity style={styles.itemAction} onClick={requestItem(item)}>
+                <TouchableOpacity style={styles.itemAction} onPress={() => {requestItem(item)}}>
                     <Icon name="send" color="blue" size={20} />
                 </TouchableOpacity>
             </View>
@@ -89,11 +89,11 @@ export default function userPage({ navigation }) {
             return (
                 <View style={styles.request}>
                     <Text style={styles.requestName}>{item.itemName}:</Text>
-                    <TouchableOpacity style={styles.requestAction} onClick={() => {RequestItemAction(item, "+", idx)}}>
+                    <TouchableOpacity style={styles.requestAction} onPress={() => {RequestItemAction(item, "+", idx)}}>
                         <Icon name="plus" color="#39f704" size={25} />
                     </TouchableOpacity>
                     <Text>{item.requestQuant}</Text>
-                    <TouchableOpacity style={styles.requestAction} onClick={() => {RequestItemAction(item, "-", idx)}}>
+                    <TouchableOpacity style={styles.requestAction} onPress={() => {RequestItemAction(item, "-", idx)}}>
                         <Icon name="minus" color="red" size={25} />
                     </TouchableOpacity>
                 </View>
@@ -128,7 +128,12 @@ export default function userPage({ navigation }) {
     }, []);
 
     const renderButton = () => {
-        return 
+        return (
+            <TouchableOpacity style={styles.cancelButton} onPress={() => {RequestDelete()}}>
+                <Text style={styles.cancelButtonText}>Cancelar pedidos</Text>
+            </TouchableOpacity>
+        );
+
     }
 
     let requestItem = (item) => {
@@ -177,8 +182,6 @@ export default function userPage({ navigation }) {
 
                 setRequests(requests);
                 client.emit('request', requests);
-                console.log(3);
-                setAtualization(atualization+1);
                 break;
 
             default:
@@ -187,26 +190,35 @@ export default function userPage({ navigation }) {
                 if(requests[idx].requestQuant === 0) {
                     requests.splice(idx, 1);
                     setRequests(requests);
-                    setAtualization(atualization+1);
                     if(requests.length === 0) {
                         setActive(false);
                     }
 
                 }else {
                     setRequests(requests);
-                    setAtualization(atualization+1);
 
                 }
                 client.emit('request', requests);
 
         }
 
+        setAtualization(atualization+1);
+
     }
 
-    let RequestDelete = () => {
-        setRequests([]);
+    const RequestDelete = () => {
+        const requesds = requests;
+        let define = [];
+
+        requesds.forEach((item, index) => {
+            if(!(accountId === item.accountId)) {
+                define = [...define, item];
+            }
+        });
+
+        setRequests(define);
         setActive(false);
-        client.emit('request', []);
+        client.emit('request', define);
 
     }
     
@@ -235,7 +247,7 @@ export default function userPage({ navigation }) {
                 <FlatList
                     style={styles.requestList}
                     data={requests}
-                    renderItem={({ item, idx }) => renderRequest(item, idx)}
+                    renderItem={({ item, index }) => renderRequest(item, index)}
                     keyExtractor={(i, idx) => String(idx)}
                 />
                 {active ? renderButton() : <View></View>}

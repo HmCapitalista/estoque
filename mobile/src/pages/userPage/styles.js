@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     },
     requests: {
         marginTop: 20,
+        width: "60%",
         height: "auto",
         maxHeight: "25%",
     },  
@@ -94,14 +95,29 @@ const styles = StyleSheet.create({
     requestName: {
         fontSize: 17,
         marginRight: 10,
-        width: "auto",
-        maxWidth: 100,
+        width: 100,
         textAlign: "center",
     },
     requestAction: {
         marginRight: 15,
         marginLeft: 15,
     },
+    cancelButton: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        backgroundColor: "red",
+        borderRadius: 5,
+        width: 200,
+        height: 50,
+    },
+    cancelButtonText: {
+        fontFamily: "Roboto",
+        fontSize: 17,
+        color: "white",
+        textAlign: "center",
+    },  
 
 });
 

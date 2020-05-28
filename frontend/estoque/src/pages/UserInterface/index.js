@@ -13,7 +13,7 @@ export default function UserInterface() {
 
     const history = useHistory();
 
-    const accountId = localStorage.getItem("accountId");
+    const [accountId, setAccountID] = useState(parseInt(localStorage.getItem("accountId")));
 
     const [name, setName] = useState('');
 
@@ -140,21 +140,32 @@ export default function UserInterface() {
     }
 
     let RequestDelete = () => {
-        setRequests([]);
+        const requesds = requests;
+        let define = [];
+
+        requesds.forEach((item, index) => {
+            if(!(accountId === item.accountId)) {
+                define = [...define, item];
+            }
+        });
+
+        setRequests(define);
         setActive(false);
-        client.emit('request', []);
+        client.emit('request', define);
 
     }
 
     let renderRequests = (item, idx) => {
-        return (
-            <div className="RequestItem">
-                <button className="Buttons" onClick={() => {RequestItemAction(item, "+", idx)}}><FiPlus size={20} color="#3ddb18" /></button>
-                <div className="RequestName">{item.itemName}: {item.requestQuant}</div>
-                <button className="Buttons" onClick={() => {RequestItemAction(item, "-", idx)}}><FiMinus size={20} color="#fa0404" /></button>
-            </div>
-
-    )};
+        if(accountId === item.accountId) {
+            return (
+                <div className="RequestItem">
+                    <button className="Buttons" onClick={() => {RequestItemAction(item, "+", idx)}}><FiPlus size={20} color="#3ddb18" /></button>
+                    <div className="RequestName">{item.itemName}: {item.requestQuant}</div>
+                    <button className="Buttons" onClick={() => {RequestItemAction(item, "-", idx)}}><FiMinus size={20} color="#fa0404" /></button>
+                </div>
+            );    
+        }
+    }
 
 
     let renderItem = (item) => {
@@ -215,6 +226,8 @@ export default function UserInterface() {
         client.on('requests', requesds => {
             setRequests(requesds);
             setAtualization(atualization+1);
+            console.log(requesds);
+            console.log(accountId);
             let count = 0;
             requesds.forEach(item => {
                 if(item.accountId === accountId){
@@ -261,9 +274,7 @@ export default function UserInterface() {
                     {
                         // eslint-disable-next-line
                         requests.map((item, idx) => {
-                            if(item.accountId === accountId) {
-                                return renderRequests(item, idx);
-                            }
+                            return renderRequests(item, idx);
                         })
                     }
                 </div>

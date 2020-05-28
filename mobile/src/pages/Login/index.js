@@ -66,6 +66,7 @@ export default function Login({ navigation }) {
                     try {
                         const id = toString(response.data.accountId);
                         await AsyncStorage.setItem('name', user);
+                        await AsyncStorage.setItem('accountId', id)
                         
                         navigation.navigate('UserPage');
 
