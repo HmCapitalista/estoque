@@ -13,7 +13,7 @@ import client from '../../services/socket';
 export default function userPage({ navigation }) {
     
     const [name, setName] = useState('');
-    const [accountId, setAccountId] = useState(2);
+    const [accountId, setAccountId] = useState(0);
 
     const [stock, setStock] = useState([]);
     const [requests, setRequests] = useState([]);
@@ -23,7 +23,7 @@ export default function userPage({ navigation }) {
     const defineVariables = async () => {
         try {
             setName(await AsyncStorage.getItem('name'));
-            setAccountId(await AsyncStorage.getItem('accountId'));
+            setAccountId(parseInt(await AsyncStorage.getItem('accountId')));
 
         } catch(err) {}
 
