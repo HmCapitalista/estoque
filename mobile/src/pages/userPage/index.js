@@ -41,19 +41,13 @@ export default function userPage({ navigation }) {
         client.on('requests', requesds => {
             setRequests(requesds);
             setAtualization(atualization+1);
-            let count = 0;
             requesds.forEach(item => {
-                if(item.accountId === accountId){
-                    count++;
+                if(item.accountId === String(accountId)){
+                    setActive(true);
 
                 }
 
             });
-            if(count !== 0) {
-                setActive(true);
-            } else {
-                setActive(false);
-            }
 
         });
 
