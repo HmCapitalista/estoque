@@ -22,8 +22,9 @@ export default function userPage({ navigation }) {
 
     const defineVariables = async () => {
         try {
+            const id = await AsyncStorage.getItem('accountId');
             setName(await AsyncStorage.getItem('name'));
-            setAccountId(parseInt(await AsyncStorage.getItem('accountId')));
+            setAccountId(parseInt(id));
 
         } catch(err) {}
 
@@ -61,7 +62,7 @@ export default function userPage({ navigation }) {
     const backFunc = async () => {
         try {
             await AsyncStorage.removeItem('name');
-            navigation.goBack();
+            navigation.navigate('LoginPage');
 
         }catch (err) {}
 

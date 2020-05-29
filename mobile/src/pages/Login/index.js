@@ -64,11 +64,15 @@ export default function Login({ navigation }) {
                     alert('Use o site para acessar a conta adm');
                 } else {
                     try {
-                        const id = toString(response.data.accountId);
+                        const id = String(response.data.accountId);
                         await AsyncStorage.setItem('name', user);
-                        await AsyncStorage.setItem('accountId', id)
+                        await AsyncStorage.setItem('accountId', id);
                         
-                        navigation.navigate('UserPage');
+                        setTimeout(() => {
+                            navigation.navigate('UserPage');
+                        }, 1000);
+
+                        
 
                     }catch(err) {}
                 }
