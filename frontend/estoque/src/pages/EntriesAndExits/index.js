@@ -78,14 +78,18 @@ export default function EntriesAndExits() {
                 });
 
                 setEAE(eAEi.reverse());
+                
+                let remove = [];
 
                 datesi.forEach((dateItem, idx) => {
-                    datesi.forEach((datItem) => {
-                        if(dateItem === datItem) {
-                            datesi.splice(idx, 1);
-                        }
-                    });
+                    if(dateItem === datesi[idx+1]) {
+                        remove = [...remove, datesi[idx+1]];
+                    }
                 });
+
+                remove.forEach(i => {
+                    datesi.splice(i, 1);
+                })
 
                 setDates(datesi);
 
