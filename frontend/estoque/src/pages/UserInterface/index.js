@@ -116,7 +116,6 @@ export default function UserInterface() {
 
                 setRequests(requests);
                 client.emit('request', requests);
-                console.log(3);
                 setAtualization(atualization+1);
                 break;
 
@@ -229,8 +228,6 @@ export default function UserInterface() {
         client.on('requests', requesds => {
             setRequests(requesds);
             setAtualization(atualization+1);
-            console.log(requesds);
-            console.log(accountId);
             let count = 0;
             requesds.forEach(item => {
                 if(item.accountId === accountId){
