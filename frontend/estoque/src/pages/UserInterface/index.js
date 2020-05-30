@@ -72,32 +72,35 @@ export default function UserInterface() {
         let itemQuant = item.itemQuant;
         let requestQuant = 1;
         let id = item.id;
-        switch(requests.length) {
-            case 0: 
-                let re = [{ name, accountId, itemName , itemQuant, id, requestQuant }];
-                setRequests(re);
-                setActive(true);
-                client.emit('request', re);
-                break;
-
-            case 4:
-                break;
-
-            default:
-                let exists = false;
-                requests.forEach((iten) => {
-                    if(iten.id === id) {
-                        exists = true;
-                    }
-                });
-
-                if(exists === false) {
-                    let re = [...requests, { name, accountId, itemName , itemQuant, id, requestQuant }];
+        if(parseInt(itemQuant) !== 0) {
+            switch(requests.length) {
+                case 0: 
+                    let re = [{ name, accountId, itemName , itemQuant, id, requestQuant }];
                     setRequests(re);
                     setActive(true);
-                    setAtualization(atualization+1);
                     client.emit('request', re);
-                }
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    let exists = false;
+                    requests.forEach((iten) => {
+                        if(iten.id === id) {
+                            exists = true;
+                        }
+                    });
+
+                    if(exists === false) {
+                        let re = [...requests, { name, accountId, itemName , itemQuant, id, requestQuant }];
+                        setRequests(re);
+                        setActive(true);
+                        setAtualization(atualization+1);
+                        client.emit('request', re);
+                    }
+
+            }
 
         }
 
