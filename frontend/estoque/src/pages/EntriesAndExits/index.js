@@ -67,7 +67,7 @@ export default function EntriesAndExits() {
             const response = await api.get('/EntriesExits');
             if(response.data.last_date.date !== null) {
                 let eAEi = response.data.entries_and_exits;
-                setEAE(eAEi.reverse());
+                setEAE(eAEi);
 
                 let datesi = [];
                 setOptionValue(response.data.last_date.date);
@@ -75,7 +75,7 @@ export default function EntriesAndExits() {
                 eAEi.forEach(EAEItem => {
                     if(!(datesi.indexOf(EAEItem.date) > -1)) {
                         datesi = [...datesi, EAEItem.date];
-                        setDates(datesi);
+                        setDates(datesi.reverse());
                     }
 
                 });
