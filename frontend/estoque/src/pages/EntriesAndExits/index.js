@@ -75,10 +75,12 @@ export default function EntriesAndExits() {
                 eAEi.forEach(EAEItem => {
                     if(!(datesi.indexOf(EAEItem.date) > -1)) {
                         datesi = [...datesi, EAEItem.date];
-                        setDates(datesi.reverse());
+                        
                     }
 
                 });
+
+                setDates(datesi.reverse());
                 
                 /* 
                 let remove = [];
