@@ -66,32 +66,33 @@ export default function EntriesAndExits() {
         try {
             const response = await api.get('/EntriesExits');
             if(response.data.last_date.date !== null) {
-                let eAEi = response.data.entries_and_exits.reverse();
-                setEAE(eAEi);
+                let eAEi = response.data.entries_and_exits;
+                setEAE(eAEi.reverse());
 
-                let datesi = [response.data.last_date.date];
-                setDates(datesi);
+                let datesi = [];
                 setOptionValue(response.data.last_date.date);
 
                 eAEi.forEach(EAEItem => {
-                    datesi = [...datesi, EAEItem.date];
-                });
+                    if(!(datesi.indexOf(EAEItem.date) > -1)) {
+                        datesi = [...datesi, EAEItem.date];
+                        setDates(datesi);
+                    }
 
-                setEAE(eAEi.reverse());
+                });
                 
+                /* 
                 let remove = [];
 
                 datesi.forEach((dateItem, idx) => {
                     if(dateItem === datesi[idx+1]) {
-                        remove = [...remove, datesi[idx+1]];
+                        remove = [...remove, dateItem];
                     }
                 });
 
                 remove.forEach(i => {
+                    console.log(i);
                     datesi.splice(i, 1);
-                })
-
-                setDates(datesi);
+                }); */
 
             } else {
                 setOptionValue('Aguardando...')
