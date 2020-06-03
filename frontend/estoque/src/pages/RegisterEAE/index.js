@@ -189,7 +189,7 @@ export default function RegisterEAE() {
                                 setIQ(e.target.value);
                             }
                         }} type="number"  />
-                        <input className="InputREAEAlter" value={inputAlter} placeholder="Auterador" onChange={e => {
+                        <input className="InputREAEAlter" value={inputAlter} placeholder="Alterador" onChange={e => {
                             setIA(e.target.value);
                         }} />
                     </div>
