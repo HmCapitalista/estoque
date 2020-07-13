@@ -1,7 +1,7 @@
 # Nesse arquivo vou explicar sobre o projeto:
 
 
-De começo, se quiser executa-lo, terá que executar `yarn add package.json`(ou `npm install`) em todos as 3 pastas, referentes a cada base a seguir do projeto:
+De começo, se quiser executa-lo, terá que executar `yarn`(ou `npm install`) em todos as 3 pastas, referentes a cada base a seguir do projeto:
 
 - Backend (API/servidor),
 - Frontend(site web),
